@@ -1159,8 +1159,28 @@
       position: absolute;
       inset: 0 auto 0 0;
       width: 6px;
-      background: #4dc65b;
-      box-shadow: 0 0 20px rgba(77,198,91,.65);
+      background: var(--state-color, #777);
+      box-shadow: 0 0 20px var(--state-glow, rgba(120,120,120,.35));
+    }
+
+    .memory-card.state-new {
+      --state-color: #777;
+      --state-glow: rgba(140,140,140,.35);
+    }
+
+    .memory-card.state-stable {
+      --state-color: #4dc65b;
+      --state-glow: rgba(77,198,91,.65);
+    }
+
+    .memory-card.state-soon {
+      --state-color: #ff9f34;
+      --state-glow: rgba(255,159,52,.65);
+    }
+
+    .memory-card.state-needed {
+      --state-color: #ff4e4e;
+      --state-glow: rgba(255,78,78,.65);
     }
 
     .memory-title {
@@ -1180,7 +1200,7 @@
 
     .memory-reps {
       align-self: start;
-      color: #47c756;
+      color: var(--state-color, #47c756);
       font-size: 1.55rem;
       font-weight: 850;
       text-align: center;
@@ -1207,7 +1227,7 @@
       width: var(--w, 0%);
       height: 100%;
       border-radius: inherit;
-      background: #4dc65b;
+      background: var(--state-color, #4dc65b);
     }
 
     .tabbar {
@@ -2105,8 +2125,9 @@
       const reps = getBlockReps(block);
       const percent = Math.min(100, reps);
       const section = state.sections[String(block.sectionId)];
+      const stateClass = getBlockColorState(block);
       return `
-        <button class="memory-card" data-open-block="${escapeHtml(block.id)}">
+        <button class="memory-card ${stateClass}" data-open-block="${escapeHtml(block.id)}">
           <span>
             <span class="memory-title">Al-Hajj - الحج</span>
             <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${block.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(block)))}</span>
@@ -2598,6 +2619,14 @@
 
     function getAllOrderedBlocks() {
       return BLOCKS.map(block => state.blocks[block.id]).filter(Boolean);
+    }
+
+    function getBlockColorState(block) {
+      const status = getDueStatus(block);
+      if ((block.stageIndex ?? -1) < 0 || !(block.retention || 0)) return "state-new";
+      if (status === "due_soon") return "state-soon";
+      if (["due_now", "overdue", "decay_risk"].includes(status)) return "state-needed";
+      return "state-stable";
     }
 
     function changeBlockReps(blockId, delta) {

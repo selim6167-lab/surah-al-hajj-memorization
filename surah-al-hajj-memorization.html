@@ -1507,6 +1507,12 @@
       background: #d8f5d8;
     }
 
+    .memorized-btn.active {
+      color: #f2f2f2;
+      border: 1px solid rgba(255,159,52,.28);
+      background: #2f2f2f;
+    }
+
     .review-card {
       margin-top: 26px;
       padding: 16px;
@@ -2583,8 +2589,7 @@
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
           ${renderReviewCard(block)}
-          <button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memorized="${escapeHtml(block.id)}">✓ Mark as Memorized</button>
-          ${block.stageIndex >= 0 ? `<button class="memorized-btn" style="margin-top:12px;min-height:54px;" data-unmemorize="${escapeHtml(block.id)}">Unmark as Memorized</button>` : ""}
+          ${renderBlockMemoryToggle(block, reps)}
           ${renderBlockAyahList(block)}
           <div class="motto">Not speed. Solidity.</div>
         </main>
@@ -2627,6 +2632,14 @@
           </div>
         </section>
       `;
+    }
+
+    function renderBlockMemoryToggle(block, reps) {
+      const isMemorized = (block.stageIndex ?? -1) >= 0;
+      if (isMemorized) {
+        return `<button class="memorized-btn active" data-memory-toggle="${escapeHtml(block.id)}">Block memorized · tap to reset</button>`;
+      }
+      return `<button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">Start block memorization</button>`;
     }
 
     function renderBlockAyahList(block) {
@@ -3307,6 +3320,15 @@
       clearBlockMemory(blockId, false);
     }
 
+    function toggleBlockMemorized(blockId) {
+      const block = state.blocks[blockId];
+      if ((block.stageIndex ?? -1) >= 0) {
+        unmemorizeBlock(blockId);
+        return;
+      }
+      markBlockMemorized(blockId);
+    }
+
     function unmemorizeAyah(ayahNumber) {
       clearAyahMemory(ayahNumber, false);
     }
@@ -3393,12 +3415,8 @@
         button.addEventListener("click", () => editBlockRepTarget(button.dataset.editTarget));
       });
 
-      document.querySelectorAll("[data-memorized]").forEach(button => {
-        button.addEventListener("click", () => markBlockMemorized(button.dataset.memorized));
-      });
-
-      document.querySelectorAll("[data-unmemorize]").forEach(button => {
-        button.addEventListener("click", () => unmemorizeBlock(button.dataset.unmemorize));
+      document.querySelectorAll("[data-memory-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleBlockMemorized(button.dataset.memoryToggle));
       });
 
       document.querySelectorAll("[data-ayah-memorized]").forEach(button => {

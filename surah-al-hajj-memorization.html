@@ -2499,15 +2499,15 @@
     }
 
     function getRank(retention = getOverallRetention()) {
-      if (retention >= 100) return "Deep Retention";
-      if (retention >= 90) return "Guardian";
-      if (retention >= 80) return "Anchored";
-      if (retention >= 70) return "Fortified";
-      if (retention >= 55) return "Preserver";
-      if (retention >= 40) return "Stabilizer";
-      if (retention >= 25) return "Holder";
-      if (retention >= 15) return "Initiated";
-      return "Seeker";
+      if (retention >= 100) return "Hafiz Mutqin";
+      if (retention >= 90) return "Rasikh";
+      if (retention >= 80) return "Mutqin";
+      if (retention >= 70) return "Thabit";
+      if (retention >= 55) return "Hafiz in Progress";
+      if (retention >= 40) return "Muraji";
+      if (retention >= 25) return "Mutadarris";
+      if (retention >= 15) return "Mubtadi";
+      return "Talib";
     }
 
     function updateAchievements(shouldSave = true) {

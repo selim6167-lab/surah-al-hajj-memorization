@@ -1513,6 +1513,11 @@
       background: #2f2f2f;
     }
 
+    .block-memory-toggle {
+      margin-top: 18px;
+      margin-bottom: 0;
+    }
+
     .review-card {
       margin-top: 26px;
       padding: 16px;
@@ -2637,9 +2642,9 @@
     function renderBlockMemoryToggle(block, reps) {
       const isMemorized = (block.stageIndex ?? -1) >= 0;
       if (isMemorized) {
-        return `<button class="memorized-btn active" data-memory-toggle="${escapeHtml(block.id)}">Forget this block</button>`;
+        return `<button class="memorized-btn active block-memory-toggle" data-memory-toggle="${escapeHtml(block.id)}">Forget this block</button>`;
       }
-      return `<button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">I know this block</button>`;
+      return `<button class="memorized-btn block-memory-toggle ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">I know this block</button>`;
     }
 
     function renderBlockAyahList(block) {

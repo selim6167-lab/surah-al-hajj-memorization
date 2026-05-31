@@ -1077,6 +1077,44 @@
       gap: 14px;
     }
 
+    .add-panel {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #242424;
+    }
+
+    .add-panel h3,
+    .review-card h3 {
+      margin: 0 0 12px;
+      color: #f0f0f2;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .add-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .add-chip {
+      min-height: 42px;
+      padding: 8px 10px;
+      color: #e9e9eb;
+      border: 1px solid #393939;
+      border-radius: 12px;
+      background: #303030;
+      font-size: .85rem;
+      font-weight: 760;
+    }
+
+    .add-chip.added {
+      color: #4dc65b;
+      border-color: rgba(77,198,91,.28);
+      background: rgba(77,198,91,.1);
+    }
+
     .memory-card {
       position: relative;
       display: grid;
@@ -1329,6 +1367,76 @@
     .memorized-btn.ready {
       color: #071207;
       background: #d8f5d8;
+    }
+
+    .review-card {
+      margin-top: 26px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #242424;
+      text-align: left;
+    }
+
+    .review-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .review-meta div {
+      min-height: 58px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #303030;
+    }
+
+    .review-meta span {
+      display: block;
+      color: #9e9ea4;
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .review-meta strong {
+      display: block;
+      margin-top: 5px;
+      color: #f2f2f2;
+      font-size: .95rem;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .review-button {
+      min-height: 48px;
+      color: #f5f5f5;
+      border-radius: 13px;
+      background: #303030;
+      font-size: .9rem;
+      font-weight: 820;
+    }
+
+    .review-button.perfect {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .review-button.minor {
+      color: #071212;
+      background: #b9edf0;
+    }
+
+    .review-button.cue {
+      background: #674725;
+    }
+
+    .review-button.failed {
+      background: #733030;
     }
 
     .motto {
@@ -1635,6 +1743,7 @@
         sections,
         ayat,
         blocks,
+        todayBlocks: ["1-7", "8-13"],
         unlockedAchievements: []
       };
     }
@@ -1661,6 +1770,7 @@
         sections: { ...initial.sections, ...(saved.sections || {}) },
         ayat: { ...initial.ayat, ...(saved.ayat || {}) },
         blocks: { ...initial.blocks, ...(saved.blocks || {}) },
+        todayBlocks: Array.isArray(saved.todayBlocks) ? saved.todayBlocks : initial.todayBlocks,
         unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : []
       };
     }
@@ -1945,12 +2055,13 @@
     }
 
     function renderTodayTab() {
-      const blocks = Object.values(state.blocks).filter(block => state.sections[String(block.sectionId)]?.unlocked);
+      const blocks = getTodayBlocks();
       return `
         <h2 class="section-label"><span class="green-dot"></span>Memorization <span class="count-pill">${blocks.length}</span></h2>
         <div class="memory-list">
           ${blocks.map(block => renderMemoryCard(block)).join("")}
         </div>
+        ${renderAddPanel()}
       `;
     }
 
@@ -1962,11 +2073,30 @@
         <button class="memory-card" data-open-block="${escapeHtml(block.id)}">
           <span>
             <span class="memory-title">Al-Hajj - الحج</span>
-            <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${section.retention}% section</span>
+            <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${block.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(block)))}</span>
           </span>
           <span class="memory-reps">${reps}<span>reps</span></span>
           <span class="thin-progress" style="--w:${percent}%"><span></span></span>
         </button>
+      `;
+    }
+
+    function renderAddPanel() {
+      const today = new Set(getTodayBlockIds());
+      return `
+        <section class="add-panel">
+          <h3>Add sections or blocks to Today</h3>
+          <div class="add-grid">
+            ${SECTIONS.filter(section => state.sections[String(section.id)]?.unlocked).map(section => `
+              <button class="add-chip" data-add-section="${section.id}">Add Section ${section.id}</button>
+            `).join("")}
+            ${Object.values(state.blocks).filter(block => state.sections[String(block.sectionId)]?.unlocked).map(block => `
+              <button class="add-chip ${today.has(block.id) ? "added" : ""}" data-add-block="${escapeHtml(block.id)}">
+                ${today.has(block.id) ? "Added" : "Add"} ${escapeHtml(block.id)}
+              </button>
+            `).join("")}
+          </div>
+        </section>
       `;
     }
 
@@ -1993,9 +2123,31 @@
           </div>
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
+          ${renderReviewCard(block)}
           <button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memorized="${escapeHtml(block.id)}">✓ Mark as Memorized</button>
+          <button class="memorized-btn" style="margin-top:12px;min-height:54px;" data-remove-today="${escapeHtml(block.id)}">Remove from Today</button>
           <div class="motto">Not speed. Solidity.</div>
         </main>
+      `;
+    }
+
+    function renderReviewCard(block) {
+      return `
+        <section class="review-card">
+          <h3>Spaced review</h3>
+          <div class="review-meta">
+            <div><span>Stage</span><strong>${escapeHtml(block.stageName || "Not started")}</strong></div>
+            <div><span>Retention</span><strong>${block.retention || 0}%</strong></div>
+            <div><span>Status</span><strong>${escapeHtml(statusLabel(getDueStatus(block)))}</strong></div>
+            <div><span>Next due</span><strong>${escapeHtml(formatDue(block))}</strong></div>
+          </div>
+          <div class="review-grid">
+            <button class="review-button perfect" data-block-result="${escapeHtml(block.id)}" data-result="perfect">Perfect</button>
+            <button class="review-button minor" data-block-result="${escapeHtml(block.id)}" data-result="minor">Minor</button>
+            <button class="review-button cue" data-block-result="${escapeHtml(block.id)}" data-result="cue">Needed Cue</button>
+            <button class="review-button failed" data-block-result="${escapeHtml(block.id)}" data-result="failed">Failed</button>
+          </div>
+        </section>
       `;
     }
 
@@ -2428,6 +2580,41 @@
       return Math.max(0, Math.min(100, Number(block.reps || 0)));
     }
 
+    function getTodayBlockIds() {
+      const saved = Array.isArray(state.todayBlocks) ? state.todayBlocks : ["1-7", "8-13"];
+      const valid = saved.filter(id => state.blocks[id] && state.sections[String(state.blocks[id].sectionId)]?.unlocked);
+      if (!valid.length) return ["1-7"].filter(id => state.blocks[id]);
+      return [...new Set(valid)];
+    }
+
+    function getTodayBlocks() {
+      return getTodayBlockIds().map(id => state.blocks[id]).filter(Boolean);
+    }
+
+    function setTodayBlocks(ids) {
+      state.todayBlocks = [...new Set(ids)].filter(id => state.blocks[id]);
+      saveState();
+    }
+
+    function addBlockToToday(blockId) {
+      setTodayBlocks([...getTodayBlockIds(), blockId]);
+      render();
+    }
+
+    function addSectionToToday(sectionId) {
+      const ids = Object.values(state.blocks)
+        .filter(block => block.sectionId === Number(sectionId))
+        .map(block => block.id);
+      setTodayBlocks([...getTodayBlockIds(), ...ids]);
+      render();
+    }
+
+    function removeBlockFromToday(blockId) {
+      setTodayBlocks(getTodayBlockIds().filter(id => id !== blockId));
+      ui.currentBlockId = null;
+      render();
+    }
+
     function changeBlockReps(blockId, delta) {
       const block = state.blocks[blockId];
       block.reps = Math.max(0, Math.min(100, getBlockReps(block) + Number(delta)));
@@ -2437,21 +2624,33 @@
     }
 
     function markBlockMemorized(blockId) {
+      recordBlockRecall(blockId, "perfect");
+    }
+
+    function recordBlockRecall(blockId, result) {
       const block = state.blocks[blockId];
       const previousUnlocked = unlockedSectionIds();
       const previousRetention = block.retention || 0;
-      const outcome = applyPerfectRecall(block);
-      block.reps = Math.max(getBlockReps(block), 1);
+      const priorDueStatus = getDueStatus(block);
+      let outcome;
+      if (result === "perfect") outcome = applyPerfectRecall(block);
+      if (result === "minor") outcome = applyMinorHesitation(block);
+      if (result === "cue") outcome = applyNeededCue(block);
+      if (result === "failed") outcome = applyFailedRecall(block);
+      if (result === "perfect") block.reps = Math.max(getBlockReps(block), 1);
       block.attempts = Array.isArray(block.attempts) ? block.attempts : [];
       block.attempts.push({
         targetType: "block",
         targetId: blockId,
-        result: "perfect",
+        result,
         attemptedAt: new Date().toISOString(),
         previousRetention,
         newRetention: block.retention || 0,
         advanced: outcome.advanced
       });
+      if (result === "perfect" && ["due_soon", "due_now", "overdue", "decay_risk"].includes(priorDueStatus)) {
+        updateStreak();
+      }
       recalculate(state);
       updateAchievements();
       saveState();
@@ -2494,6 +2693,14 @@
         });
       });
 
+      document.querySelectorAll("[data-add-block]").forEach(button => {
+        button.addEventListener("click", () => addBlockToToday(button.dataset.addBlock));
+      });
+
+      document.querySelectorAll("[data-add-section]").forEach(button => {
+        button.addEventListener("click", () => addSectionToToday(button.dataset.addSection));
+      });
+
       document.querySelectorAll("[data-main]").forEach(button => {
         button.addEventListener("click", () => {
           ui.currentBlockId = null;
@@ -2507,6 +2714,14 @@
 
       document.querySelectorAll("[data-memorized]").forEach(button => {
         button.addEventListener("click", () => markBlockMemorized(button.dataset.memorized));
+      });
+
+      document.querySelectorAll("[data-block-result]").forEach(button => {
+        button.addEventListener("click", () => recordBlockRecall(button.dataset.blockResult, button.dataset.result));
+      });
+
+      document.querySelectorAll("[data-remove-today]").forEach(button => {
+        button.addEventListener("click", () => removeBlockFromToday(button.dataset.removeToday));
       });
 
       document.querySelectorAll("[data-reset-block]").forEach(button => {

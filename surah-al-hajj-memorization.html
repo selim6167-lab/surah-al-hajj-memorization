@@ -1935,6 +1935,11 @@
       font-weight: 650;
     }
 
+    .progress-trackers {
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+
     .decay-grid {
       display: grid;
       gap: 12px;
@@ -2466,9 +2471,37 @@
     }
 
     function getOverallRetention() {
-      const started = Object.values(state.ayat).filter(item => state.sections[String(item.sectionId)].unlocked && item.stageIndex >= 0);
+      return getGlobalRetention();
+    }
+
+    function getStartedAyatAverage() {
+      const started = Object.values(state.ayat).filter(item => item.stageIndex >= 0);
       if (!started.length) return 0;
       return Math.round(started.reduce((sum, item) => sum + (item.retention || 0), 0) / started.length);
+    }
+
+    function getSurahAverage() {
+      const ayat = Object.values(state.ayat);
+      if (!ayat.length) return 0;
+      return Math.round(ayat.reduce((sum, item) => sum + (item.retention || 0), 0) / ayat.length);
+    }
+
+    function getSurahFluency() {
+      const blocks = Object.values(state.blocks);
+      if (!blocks.length) return 0;
+      return Math.round(blocks.reduce((sum, block) => sum + (block.retention || 0), 0) / blocks.length);
+    }
+
+    function getWeakestSurahAyah() {
+      const ayat = Object.values(state.ayat);
+      if (!ayat.length) return null;
+      return ayat.reduce((weakest, ayah) => (ayah.retention || 0) < (weakest.retention || 0) ? ayah : weakest, ayat[0]);
+    }
+
+    function getGlobalRetention() {
+      const weakest = getWeakestSurahAyah();
+      if (!weakest) return 0;
+      return Math.min(getSurahFluency(), weakest.retention || 0);
     }
 
     function getRank(retention = getOverallRetention()) {
@@ -2761,13 +2794,23 @@
     }
 
     function renderProgressTab() {
-      const overall = getOverallRetention();
+      const globalRetention = getGlobalRetention();
+      const surahAverage = getSurahAverage();
+      const surahFluency = getSurahFluency();
+      const startedAverage = getStartedAyatAverage();
+      const weakest = getWeakestSurahAyah();
       return `
         <h2 class="section-label"><span class="green-dot"></span>Percentages</h2>
         <section class="progress-hero">
-          <div class="muted-label">Overall retention</div>
-          <div class="progress-big">${overall}<span>% · ${escapeHtml(getRank(overall))}</span></div>
-          <div class="rep-line" style="--w:${overall}%"><span></span></div>
+          <div class="muted-label">Global retention</div>
+          <div class="progress-big">${globalRetention}<span>% · ${escapeHtml(getRank(globalRetention))}</span></div>
+          <div class="rep-line" style="--w:${globalRetention}%"><span></span></div>
+          <div class="review-meta progress-trackers">
+            <div><span>Surah average</span><strong>${surahAverage}%</strong></div>
+            <div><span>Surah fluency</span><strong>${surahFluency}%</strong></div>
+            <div><span>Started ayat</span><strong>${startedAverage}%</strong></div>
+            <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
+          </div>
         </section>
         <div class="decay-grid">
           ${Object.values(state.sections).map(section => renderDecayCard(section)).join("")}

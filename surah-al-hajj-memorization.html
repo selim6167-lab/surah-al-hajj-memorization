@@ -2637,9 +2637,9 @@
     function renderBlockMemoryToggle(block, reps) {
       const isMemorized = (block.stageIndex ?? -1) >= 0;
       if (isMemorized) {
-        return `<button class="memorized-btn active" data-memory-toggle="${escapeHtml(block.id)}">Block memorized · tap to reset</button>`;
+        return `<button class="memorized-btn active" data-memory-toggle="${escapeHtml(block.id)}">Forget this block</button>`;
       }
-      return `<button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">Start block memorization</button>`;
+      return `<button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">I know this block</button>`;
     }
 
     function renderBlockAyahList(block) {

@@ -1940,6 +1940,10 @@
       margin-bottom: 0;
     }
 
+    .progress-trackers > div:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
     .decay-grid {
       display: grid;
       gap: 12px;
@@ -2472,12 +2476,6 @@
       return getGlobalRetention();
     }
 
-    function getStartedAyatAverage() {
-      const started = Object.values(state.ayat).filter(item => item.stageIndex >= 0);
-      if (!started.length) return 0;
-      return Math.round(started.reduce((sum, item) => sum + (item.retention || 0), 0) / started.length);
-    }
-
     function getSurahAverage() {
       const ayat = Object.values(state.ayat);
       if (!ayat.length) return 0;
@@ -2494,6 +2492,12 @@
       const ayat = Object.values(state.ayat);
       if (!ayat.length) return null;
       return ayat.reduce((weakest, ayah) => (ayah.retention || 0) < (weakest.retention || 0) ? ayah : weakest, ayat[0]);
+    }
+
+    function getWeakestSection() {
+      const sections = Object.values(state.sections);
+      if (!sections.length) return null;
+      return sections.reduce((weakest, section) => (section.retention || 0) < (weakest.retention || 0) ? section : weakest, sections[0]);
     }
 
     function getGlobalRetention() {
@@ -2795,8 +2799,7 @@
       const globalRetention = getGlobalRetention();
       const surahAverage = getSurahAverage();
       const surahFluency = getSurahFluency();
-      const startedAverage = getStartedAyatAverage();
-      const weakest = getWeakestSurahAyah();
+      const weakestSection = getWeakestSection();
       return `
         <h2 class="section-label"><span class="green-dot"></span>Percentages</h2>
         <section class="progress-hero">
@@ -2806,8 +2809,7 @@
           <div class="review-meta progress-trackers">
             <div><span>Surah average</span><strong>${surahAverage}%</strong></div>
             <div><span>Surah fluency</span><strong>${surahFluency}%</strong></div>
-            <div><span>Started ayat</span><strong>${startedAverage}%</strong></div>
-            <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
+            <div><span>Weakest section</span><strong>${weakestSection ? `Section ${weakestSection.id} · ${weakestSection.retention || 0}%` : "None"}</strong></div>
           </div>
         </section>
         <div class="decay-grid">

@@ -2488,12 +2488,6 @@
       return Math.round(blocks.reduce((sum, block) => sum + (block.retention || 0), 0) / blocks.length);
     }
 
-    function getWeakestSurahAyah() {
-      const ayat = Object.values(state.ayat);
-      if (!ayat.length) return null;
-      return ayat.reduce((weakest, ayah) => (ayah.retention || 0) < (weakest.retention || 0) ? ayah : weakest, ayat[0]);
-    }
-
     function getWeakestSection() {
       const sections = Object.values(state.sections);
       if (!sections.length) return null;
@@ -2501,9 +2495,7 @@
     }
 
     function getGlobalRetention() {
-      const weakest = getWeakestSurahAyah();
-      if (!weakest) return 0;
-      return Math.min(getSurahFluency(), weakest.retention || 0);
+      return getSurahAverage();
     }
 
     function getRank(retention = getOverallRetention()) {

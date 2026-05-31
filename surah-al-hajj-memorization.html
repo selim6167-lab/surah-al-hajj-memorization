@@ -1250,12 +1250,7 @@
     .block-status-ribbon {
       --ribbon-color: #777;
       --ribbon-bg: rgba(120,120,120,.14);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
       min-height: 54px;
-      padding: 12px 22px;
       border-top: 1px solid #202020;
       border-bottom: 1px solid #282828;
       background: var(--ribbon-bg);
@@ -1279,18 +1274,6 @@
     .block-status-ribbon.state-needed {
       --ribbon-color: #ff4e4e;
       --ribbon-bg: rgba(255,78,78,.18);
-    }
-
-    .block-status-ribbon strong {
-      color: var(--ribbon-color);
-      font-size: 1rem;
-      font-weight: 860;
-    }
-
-    .block-status-ribbon span {
-      color: #c8c8cc;
-      font-size: .86rem;
-      font-weight: 720;
     }
 
     .memory-title {
@@ -2610,10 +2593,7 @@
 
     function renderBlockStatusRibbon(block, stateClass = getBlockColorState(block)) {
       return `
-        <div class="block-status-ribbon ${stateClass}">
-          <strong>${escapeHtml(blockRibbonLabel(stateClass))}</strong>
-          <span>${getBlockDisplayRetention(block)}% visible</span>
-        </div>
+        <div class="block-status-ribbon ${stateClass}" aria-label="${escapeHtml(blockRibbonLabel(stateClass))}"></div>
       `;
     }
 

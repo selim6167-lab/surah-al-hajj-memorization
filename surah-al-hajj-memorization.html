@@ -2163,6 +2163,7 @@
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
           ${renderReviewCard(block)}
           <button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memorized="${escapeHtml(block.id)}">✓ Mark as Memorized</button>
+          ${block.stageIndex >= 0 ? `<button class="memorized-btn" style="margin-top:12px;min-height:54px;" data-unmemorize="${escapeHtml(block.id)}">Unmark as Memorized</button>` : ""}
           <div class="motto">Not speed. Solidity.</div>
         </main>
       `;
@@ -2675,8 +2676,16 @@
 
     function resetBlock(blockId) {
       if (!confirm("Reset this block's repetitions and block retention?")) return;
+      clearBlockMemory(blockId, true);
+    }
+
+    function unmemorizeBlock(blockId) {
+      clearBlockMemory(blockId, false);
+    }
+
+    function clearBlockMemory(blockId, includeReps) {
       const block = state.blocks[blockId];
-      block.reps = 0;
+      if (includeReps) block.reps = 0;
       block.retention = 0;
       block.stageIndex = -1;
       block.stageName = "Not started";
@@ -2684,6 +2693,8 @@
       block.lastSuccessfulRecallAt = null;
       block.nextDueAt = null;
       block.lastResult = null;
+      block.lastAttemptAt = null;
+      block.weak = false;
       block.attempts = [];
       recalculate(state);
       saveState();
@@ -2720,6 +2731,10 @@
 
       document.querySelectorAll("[data-memorized]").forEach(button => {
         button.addEventListener("click", () => markBlockMemorized(button.dataset.memorized));
+      });
+
+      document.querySelectorAll("[data-unmemorize]").forEach(button => {
+        button.addEventListener("click", () => unmemorizeBlock(button.dataset.unmemorize));
       });
 
       document.querySelectorAll("[data-block-result]").forEach(button => {

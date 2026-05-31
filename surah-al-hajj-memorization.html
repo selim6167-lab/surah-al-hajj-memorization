@@ -1337,6 +1337,15 @@
       font-weight: 760;
     }
 
+    .rep-edit {
+      padding: 0;
+      color: #aaaab2;
+      background: transparent;
+      font-size: 1.55rem;
+      line-height: 1;
+      vertical-align: baseline;
+    }
+
     .rep-line {
       height: 8px;
       overflow: hidden;
@@ -1351,28 +1360,16 @@
       background: #4dc65b;
     }
 
-    .big-plus {
-      width: 134px;
-      height: 134px;
-      margin: 38px auto 26px;
-      color: white;
-      border-radius: 999px;
-      background: #4db958;
-      font-size: 2.6rem;
-      font-weight: 900;
-      box-shadow: 0 16px 40px rgba(0,0,0,.34);
-    }
-
     .rep-actions {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      max-width: 300px;
-      margin: 0 auto;
+      max-width: 230px;
+      margin: 38px auto 0;
     }
 
     .rep-small {
-      min-height: 58px;
+      min-height: 64px;
       color: #f3f3f3;
       border-radius: 13px;
       background: #2d2d2d;
@@ -1383,6 +1380,11 @@
     .rep-small.minus {
       color: #aaaab2;
       background: #963333;
+    }
+
+    .rep-small.plus {
+      color: white;
+      background: #4db958;
     }
 
     .strength-stars {
@@ -2151,13 +2153,11 @@
         </header>
         <main class="rep-panel">
           <div class="muted-label">Repetitions</div>
-          <div class="rep-number"><strong>${reps}</strong><span>/ 100 ✎</span></div>
+          <div class="rep-number"><strong>${reps}</strong><span>/ 100 <button class="rep-edit" data-edit-reps="${escapeHtml(block.id)}" aria-label="Edit repetitions">✎</button></span></div>
           <div class="rep-line" style="--w:${progress}%"><span></span></div>
-          <button class="big-plus" data-rep="${escapeHtml(block.id)}" data-delta="1">+1</button>
           <div class="rep-actions">
             <button class="rep-small minus" data-rep="${escapeHtml(block.id)}" data-delta="-1">-1</button>
-            <button class="rep-small" data-rep="${escapeHtml(block.id)}" data-delta="5">+5</button>
-            <button class="rep-small" data-rep="${escapeHtml(block.id)}" data-delta="10">+10</button>
+            <button class="rep-small plus" data-rep="${escapeHtml(block.id)}" data-delta="1">+1</button>
           </div>
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
@@ -2638,6 +2638,22 @@
       render();
     }
 
+    function editBlockReps(blockId) {
+      const block = state.blocks[blockId];
+      const current = getBlockReps(block);
+      const input = prompt("Set repetitions from 0 to 100", String(current));
+      if (input === null) return;
+      const next = Number(input);
+      if (!Number.isFinite(next)) {
+        alert("Please enter a number between 0 and 100.");
+        return;
+      }
+      block.reps = Math.max(0, Math.min(100, Math.round(next)));
+      block.lastAttemptAt = new Date().toISOString();
+      saveState();
+      render();
+    }
+
     function markBlockMemorized(blockId) {
       recordBlockRecall(blockId, "perfect");
     }
@@ -2727,6 +2743,10 @@
 
       document.querySelectorAll("[data-rep]").forEach(button => {
         button.addEventListener("click", () => changeBlockReps(button.dataset.rep, button.dataset.delta));
+      });
+
+      document.querySelectorAll("[data-edit-reps]").forEach(button => {
+        button.addEventListener("click", () => editBlockReps(button.dataset.editReps));
       });
 
       document.querySelectorAll("[data-memorized]").forEach(button => {

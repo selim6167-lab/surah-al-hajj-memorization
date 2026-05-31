@@ -1654,7 +1654,7 @@
     .ayah-rep-count,
     .ayah-memory-action,
     .ayah-recall,
-    .ayah-disclosure summary {
+    .ayah-toggle {
       display: grid;
       place-items: center;
       min-height: 42px;
@@ -1693,21 +1693,13 @@
       grid-column: 1 / -1;
     }
 
-    .ayah-disclosure summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .ayah-disclosure[open] summary {
+    .ayah-toggle.open {
       color: #071207;
       background: #d8f5d8;
     }
 
-    .ayah-disclosure:not([open]) .ayah-arabic {
-      display: none;
-    }
-
-    .ayah-disclosure .ayah-arabic {
-      margin-top: 9px;
+    .ayah-card-actions .ayah-arabic {
+      grid-column: 1 / -1;
       padding: 12px;
       border-radius: 12px;
       background: #1d1d1d;
@@ -2617,10 +2609,8 @@
                     ? `<button class="ayah-memory-action" data-ayah-unmemorize="${ayah.ayahNumber}">Unmark Memorized</button>`
                     : `<button class="ayah-memory-action ${reps > 0 ? "ready" : ""}" data-ayah-memorized="${ayah.ayahNumber}">Mark Memorized</button>`}
                   <button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>
-                  <details class="ayah-disclosure">
-                    <summary>Show ayah</summary>
-                    <div class="ayah-arabic">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
-                  </details>
+                  <button class="ayah-toggle" data-ayah-toggle="${ayah.ayahNumber}">Show ayah</button>
+                  <div class="ayah-arabic hidden" data-ayah-text="${ayah.ayahNumber}">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
                 </div>
               </div>
             `;
@@ -3306,6 +3296,16 @@
       render();
     }
 
+    function toggleAyahText(button) {
+      const row = button.closest(".ayah-repair-row");
+      const text = row?.querySelector(`[data-ayah-text="${button.dataset.ayahToggle}"]`);
+      if (!text) return;
+      const willShow = text.classList.contains("hidden");
+      text.classList.toggle("hidden", !willShow);
+      button.classList.toggle("open", willShow);
+      button.textContent = willShow ? "Hide ayah" : "Show ayah";
+    }
+
     // EVENT HANDLERS
     function bindEvents() {
       document.querySelectorAll("[data-tab]").forEach(button => {
@@ -3356,6 +3356,10 @@
 
       document.querySelectorAll("[data-ayah-unmemorize]").forEach(button => {
         button.addEventListener("click", () => unmemorizeAyah(button.dataset.ayahUnmemorize));
+      });
+
+      document.querySelectorAll("[data-ayah-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleAyahText(button));
       });
 
       document.querySelectorAll("[data-block-result]").forEach(button => {

@@ -2583,9 +2583,9 @@
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
           ${renderReviewCard(block)}
-          ${renderBlockAyahList(block)}
           <button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memorized="${escapeHtml(block.id)}">✓ Mark as Memorized</button>
           ${block.stageIndex >= 0 ? `<button class="memorized-btn" style="margin-top:12px;min-height:54px;" data-unmemorize="${escapeHtml(block.id)}">Unmark as Memorized</button>` : ""}
+          ${renderBlockAyahList(block)}
           <div class="motto">Not speed. Solidity.</div>
         </main>
       `;

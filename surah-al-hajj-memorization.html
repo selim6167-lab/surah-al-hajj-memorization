@@ -1641,6 +1641,18 @@
       margin-top: 2px;
     }
 
+    .ayah-practice-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 58px 1fr 58px;
+      gap: 9px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .ayah-rep-button,
+    .ayah-rep-count,
+    .ayah-memory-action,
     .ayah-recall,
     .ayah-disclosure summary {
       display: grid;
@@ -1655,8 +1667,30 @@
       cursor: pointer;
     }
 
+    .ayah-rep-count {
+      color: #a8a8ad;
+      cursor: default;
+    }
+
+    .ayah-rep-button,
+    .ayah-memory-action,
     .ayah-recall {
       border: 0;
+    }
+
+    .ayah-rep-button.minus {
+      color: #d2d2d8;
+      background: #743333;
+    }
+
+    .ayah-rep-button.plus,
+    .ayah-memory-action.ready {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .ayah-memory-action {
+      grid-column: 1 / -1;
     }
 
     .ayah-disclosure summary::-webkit-details-marker {
@@ -2049,6 +2083,7 @@
           ayahNumber: ayah,
           sectionId: section.id,
           blockId: block.id,
+          reps: 0,
           retention: 0,
           stageIndex: -1,
           stageName: "Not started",
@@ -2273,6 +2308,9 @@
         item.reps = Math.max(getBlockReps(item), 1);
         recordImplicitAyahSuccess(item, now);
       }
+      if (targetType === "ayah" && result === "perfect") {
+        item.reps = Math.max(getAyahReps(item), 1);
+      }
 
       const attempt = {
         targetType,
@@ -2316,6 +2354,7 @@
       getAyatForBlock(block).forEach(ayah => {
         const previousRetention = ayah.retention || 0;
         const outcome = applyPerfectRecall(ayah, now);
+        ayah.reps = Math.max(getAyahReps(ayah), 1);
         ayah.attempts = Array.isArray(ayah.attempts) ? ayah.attempts : [];
         ayah.attempts.push({
           targetType: "ayah",
@@ -2558,15 +2597,25 @@
         <section class="review-card ayah-repair">
           <h3>Ayat in this block</h3>
           <div class="ayah-repair-list">
-            ${getAyatForBlock(block).map(ayah => `
+            ${getAyatForBlock(block).map(ayah => {
+              const reps = getAyahReps(ayah);
+              return `
               <div class="ayah-repair-row ${getItemColorState(ayah)}">
                 <span class="ayah-num">${ayah.ayahNumber}</span>
                 <span class="ayah-repair-main">
                   <strong>Ayah ${ayah.ayahNumber} · ${ayah.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(ayah)))}</strong>
-                  <span>${escapeHtml(formatDue(ayah))} · Stage: ${escapeHtml(ayah.stageName || "Not started")}</span>
+                  <span>${escapeHtml(formatDue(ayah))} · Stage: ${escapeHtml(ayah.stageName || "Not started")} · ${escapeHtml(formatReps(reps))}</span>
                 </span>
                 <span class="score-pair">${ayah.retention || 0}%<span>${escapeHtml(formatDue(ayah))}</span></span>
+                <div class="ayah-practice-row">
+                  <button class="ayah-rep-button minus" data-ayah-rep="${ayah.ayahNumber}" data-delta="-1">-1</button>
+                  <span class="ayah-rep-count">${escapeHtml(formatReps(reps))}</span>
+                  <button class="ayah-rep-button plus" data-ayah-rep="${ayah.ayahNumber}" data-delta="1">+1</button>
+                </div>
                 <div class="ayah-card-actions">
+                  ${ayah.stageIndex >= 0
+                    ? `<button class="ayah-memory-action" data-ayah-unmemorize="${ayah.ayahNumber}">Unmark Memorized</button>`
+                    : `<button class="ayah-memory-action ${reps > 0 ? "ready" : ""}" data-ayah-memorized="${ayah.ayahNumber}">Mark Memorized</button>`}
                   <button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>
                   <details class="ayah-disclosure">
                     <summary>Show ayah</summary>
@@ -2574,7 +2623,8 @@
                   </details>
                 </div>
               </div>
-            `).join("")}
+            `;
+            }).join("")}
           </div>
         </section>
       `;
@@ -3054,8 +3104,16 @@
       return Array.from({ length: end - start + 1 }, (_, index) => start + index);
     }
 
+    function formatReps(reps) {
+      return `${reps} ${reps === 1 ? "rep" : "reps"}`;
+    }
+
     function getBlockReps(block) {
       return Math.max(0, Math.min(999, Number(block.reps || 0)));
+    }
+
+    function getAyahReps(ayah) {
+      return Math.max(0, Math.min(999, Number(ayah.reps || 0)));
     }
 
     function getBlockRepTarget(block) {
@@ -3132,6 +3190,14 @@
       render();
     }
 
+    function changeAyahReps(ayahNumber, delta) {
+      const ayah = state.ayat[String(ayahNumber)];
+      ayah.reps = Math.max(0, Math.min(999, getAyahReps(ayah) + Number(delta)));
+      ayah.lastAttemptAt = new Date().toISOString();
+      saveState();
+      render();
+    }
+
     function editBlockRepTarget(blockId) {
       const block = state.blocks[blockId];
       const current = getBlockRepTarget(block);
@@ -3149,6 +3215,10 @@
 
     function markBlockMemorized(blockId) {
       recordBlockRecall(blockId, "perfect");
+    }
+
+    function markAyahMemorized(ayahNumber) {
+      recordAttempt("ayah", ayahNumber, "perfect");
     }
 
     function recordBlockRecall(blockId, result) {
@@ -3196,6 +3266,10 @@
       clearBlockMemory(blockId, false);
     }
 
+    function unmemorizeAyah(ayahNumber) {
+      clearAyahMemory(ayahNumber, false);
+    }
+
     function clearBlockMemory(blockId, includeReps) {
       const block = state.blocks[blockId];
       if (includeReps) block.reps = 0;
@@ -3209,6 +3283,24 @@
       block.lastAttemptAt = null;
       block.weak = false;
       block.attempts = [];
+      recalculate(state);
+      saveState();
+      render();
+    }
+
+    function clearAyahMemory(ayahNumber, includeReps) {
+      const ayah = state.ayat[String(ayahNumber)];
+      if (includeReps) ayah.reps = 0;
+      ayah.retention = 0;
+      ayah.stageIndex = -1;
+      ayah.stageName = "Not started";
+      ayah.firstLockedAt = null;
+      ayah.lastSuccessfulRecallAt = null;
+      ayah.nextDueAt = null;
+      ayah.lastResult = null;
+      ayah.lastAttemptAt = null;
+      ayah.weak = false;
+      ayah.attempts = [];
       recalculate(state);
       saveState();
       render();
@@ -3242,6 +3334,10 @@
         button.addEventListener("click", () => changeBlockReps(button.dataset.rep, button.dataset.delta));
       });
 
+      document.querySelectorAll("[data-ayah-rep]").forEach(button => {
+        button.addEventListener("click", () => changeAyahReps(button.dataset.ayahRep, button.dataset.delta));
+      });
+
       document.querySelectorAll("[data-edit-target]").forEach(button => {
         button.addEventListener("click", () => editBlockRepTarget(button.dataset.editTarget));
       });
@@ -3252,6 +3348,14 @@
 
       document.querySelectorAll("[data-unmemorize]").forEach(button => {
         button.addEventListener("click", () => unmemorizeBlock(button.dataset.unmemorize));
+      });
+
+      document.querySelectorAll("[data-ayah-memorized]").forEach(button => {
+        button.addEventListener("click", () => markAyahMemorized(button.dataset.ayahMemorized));
+      });
+
+      document.querySelectorAll("[data-ayah-unmemorize]").forEach(button => {
+        button.addEventListener("click", () => unmemorizeAyah(button.dataset.ayahUnmemorize));
       });
 
       document.querySelectorAll("[data-block-result]").forEach(button => {

@@ -1247,6 +1247,52 @@
       --state-glow: rgba(255,78,78,.65);
     }
 
+    .block-status-ribbon {
+      --ribbon-color: #777;
+      --ribbon-bg: rgba(120,120,120,.14);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 54px;
+      padding: 12px 22px;
+      border-top: 1px solid #202020;
+      border-bottom: 1px solid #282828;
+      background: var(--ribbon-bg);
+    }
+
+    .block-status-ribbon.state-new {
+      --ribbon-color: #8a8a8a;
+      --ribbon-bg: rgba(138,138,138,.16);
+    }
+
+    .block-status-ribbon.state-stable {
+      --ribbon-color: #4dc65b;
+      --ribbon-bg: rgba(77,198,91,.16);
+    }
+
+    .block-status-ribbon.state-soon {
+      --ribbon-color: #ff9f34;
+      --ribbon-bg: rgba(255,159,52,.18);
+    }
+
+    .block-status-ribbon.state-needed {
+      --ribbon-color: #ff4e4e;
+      --ribbon-bg: rgba(255,78,78,.18);
+    }
+
+    .block-status-ribbon strong {
+      color: var(--ribbon-color);
+      font-size: 1rem;
+      font-weight: 860;
+    }
+
+    .block-status-ribbon span {
+      color: #c8c8cc;
+      font-size: .86rem;
+      font-weight: 720;
+    }
+
     .memory-title {
       display: block;
       font-size: 1.25rem;
@@ -2535,12 +2581,14 @@
       const displayRetention = getBlockDisplayRetention(block);
       const strength = displayRetention ? Math.max(1, Math.min(5, Math.ceil(displayRetention / 20))) : 0;
       const progress = Math.min(100, Math.round((reps / target) * 100));
+      const stateClass = getBlockColorState(block);
       return `
         <header class="detail-header">
           <button class="back-pill" data-main>‹ Main</button>
           <div class="detail-title">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} - الحج</div>
           <button class="trash-pill" data-reset-block="${escapeHtml(block.id)}">⌫</button>
         </header>
+        ${renderBlockStatusRibbon(block, stateClass)}
         <main class="rep-panel">
           <div class="muted-label">Repetitions</div>
           <div class="rep-number"><strong>${reps}</strong><span>/ ${target} <button class="rep-edit" data-edit-target="${escapeHtml(block.id)}" aria-label="Edit repetition target">✎</button></span></div>
@@ -2560,20 +2608,28 @@
       `;
     }
 
+    function renderBlockStatusRibbon(block, stateClass = getBlockColorState(block)) {
+      return `
+        <div class="block-status-ribbon ${stateClass}">
+          <strong>${escapeHtml(blockRibbonLabel(stateClass))}</strong>
+          <span>${getBlockDisplayRetention(block)}% visible</span>
+        </div>
+      `;
+    }
+
+    function blockRibbonLabel(stateClass) {
+      return ({
+        "state-new": "Not memorized",
+        "state-stable": "Memorized",
+        "state-soon": "Recall soon",
+        "state-needed": "Recall needed"
+      })[stateClass] || "Status";
+    }
+
     function renderReviewCard(block) {
-      const weakest = getWeakestAyah(block);
-      const displayRetention = getBlockDisplayRetention(block);
       return `
         <section class="review-card">
-          <h3>Block spaced review</h3>
-          <div class="review-meta">
-            <div><span>Stage</span><strong>${escapeHtml(block.stageName || "Not started")}</strong></div>
-            <div><span>Block fluency</span><strong>${block.retention || 0}%</strong></div>
-            <div><span>Visible score</span><strong>${displayRetention}%</strong></div>
-            <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
-            <div><span>Status</span><strong>${escapeHtml(statusLabel(getDueStatus(block)))}</strong></div>
-            <div><span>Next due</span><strong>${escapeHtml(formatDue(block))}</strong></div>
-          </div>
+          <h3>Block recall</h3>
           <div class="review-grid">
             <button class="review-button perfect" data-block-result="${escapeHtml(block.id)}" data-result="perfect">Perfect</button>
             <button class="review-button minor" data-block-result="${escapeHtml(block.id)}" data-result="minor">Minor</button>

@@ -1179,6 +1179,13 @@
       letter-spacing: 0;
     }
 
+    .review-hint {
+      margin: -4px 0 14px;
+      color: #a8a8ad;
+      font-size: .88rem;
+      line-height: 1.35;
+    }
+
     .add-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1576,16 +1583,18 @@
     }
 
     .review-button.minor {
-      color: #071212;
-      background: #b9edf0;
+      color: #d8eef0;
+      background: #2b3a3c;
     }
 
     .review-button.cue {
-      background: #674725;
+      color: #f0d8bc;
+      background: #403427;
     }
 
     .review-button.failed {
-      background: #733030;
+      color: #f0caca;
+      background: #402a2a;
     }
 
     .ayah-repair {
@@ -2593,8 +2602,8 @@
           </div>
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
-          ${renderReviewCard(block)}
           ${renderBlockMemoryToggle(block, reps)}
+          ${renderReviewCard(block)}
           ${renderBlockAyahList(block)}
           <div class="motto">Not speed. Solidity.</div>
         </main>
@@ -2617,24 +2626,26 @@
     }
 
     function renderReviewCard(block) {
+      const isMemorized = (block.stageIndex ?? -1) >= 0;
       const weakest = getWeakestAyah(block);
       const displayRetention = getBlockDisplayRetention(block);
       const ayahAverage = getBlockAyahAverage(block);
       return `
         <section class="review-card">
-          <h3>Block recall</h3>
+          <h3>${isMemorized ? "How was the block recall?" : "Block scores"}</h3>
+          ${isMemorized ? `<p class="review-hint">Recite the full block first, then choose one result.</p>` : ""}
           <div class="review-meta">
             <div><span>Visible score</span><strong>${displayRetention}%</strong></div>
             <div><span>Block fluency</span><strong>${block.retention || 0}%</strong></div>
             <div><span>Ayah average</span><strong>${ayahAverage}%</strong></div>
             <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
           </div>
-          <div class="review-grid">
+          ${isMemorized ? `<div class="review-grid">
             <button class="review-button perfect" data-block-result="${escapeHtml(block.id)}" data-result="perfect">Perfect</button>
             <button class="review-button minor" data-block-result="${escapeHtml(block.id)}" data-result="minor">Minor</button>
             <button class="review-button cue" data-block-result="${escapeHtml(block.id)}" data-result="cue">Needed Cue</button>
             <button class="review-button failed" data-block-result="${escapeHtml(block.id)}" data-result="failed">Failed</button>
-          </div>
+          </div>` : ""}
         </section>
       `;
     }

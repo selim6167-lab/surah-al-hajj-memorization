@@ -1765,6 +1765,7 @@
           retention: 0,
           stageIndex: -1,
           stageName: "Not started",
+          repTarget: 100,
           firstLockedAt: null,
           lastSuccessfulRecallAt: null,
           nextDueAt: null,
@@ -2125,7 +2126,8 @@
 
     function renderMemoryCard(block) {
       const reps = getBlockReps(block);
-      const percent = Math.min(100, reps);
+      const target = getBlockRepTarget(block);
+      const percent = Math.min(100, Math.round((reps / target) * 100));
       const section = state.sections[String(block.sectionId)];
       const stateClass = getBlockColorState(block);
       return `
@@ -2134,7 +2136,7 @@
             <span class="memory-title">Al-Hajj - الحج</span>
             <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${block.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(block)))}</span>
           </span>
-          <span class="memory-reps">${reps}<span>reps</span></span>
+          <span class="memory-reps">${reps}<span>/${target}</span></span>
           <span class="thin-progress" style="--w:${percent}%"><span></span></span>
         </button>
       `;
@@ -2143,8 +2145,9 @@
     function renderBlockDetail(blockId) {
       const block = state.blocks[blockId];
       const reps = getBlockReps(block);
+      const target = getBlockRepTarget(block);
       const strength = block.retention ? Math.max(1, Math.min(5, Math.ceil((block.retention || 0) / 20))) : 0;
-      const progress = Math.min(100, reps);
+      const progress = Math.min(100, Math.round((reps / target) * 100));
       return `
         <header class="detail-header">
           <button class="back-pill" data-main>‹ Main</button>
@@ -2153,7 +2156,7 @@
         </header>
         <main class="rep-panel">
           <div class="muted-label">Repetitions</div>
-          <div class="rep-number"><strong>${reps}</strong><span>/ 100 <button class="rep-edit" data-edit-reps="${escapeHtml(block.id)}" aria-label="Edit repetitions">✎</button></span></div>
+          <div class="rep-number"><strong>${reps}</strong><span>/ ${target} <button class="rep-edit" data-edit-target="${escapeHtml(block.id)}" aria-label="Edit repetition target">✎</button></span></div>
           <div class="rep-line" style="--w:${progress}%"><span></span></div>
           <div class="rep-actions">
             <button class="rep-small minus" data-rep="${escapeHtml(block.id)}" data-delta="-1">-1</button>
@@ -2615,7 +2618,13 @@
     }
 
     function getBlockReps(block) {
-      return Math.max(0, Math.min(100, Number(block.reps || 0)));
+      return Math.max(0, Math.min(999, Number(block.reps || 0)));
+    }
+
+    function getBlockRepTarget(block) {
+      const target = Number(block.repTarget || 100);
+      if (!Number.isFinite(target)) return 100;
+      return Math.max(1, Math.min(999, Math.round(target)));
     }
 
     function getAllOrderedBlocks() {
@@ -2632,24 +2641,23 @@
 
     function changeBlockReps(blockId, delta) {
       const block = state.blocks[blockId];
-      block.reps = Math.max(0, Math.min(100, getBlockReps(block) + Number(delta)));
+      block.reps = Math.max(0, Math.min(999, getBlockReps(block) + Number(delta)));
       block.lastAttemptAt = new Date().toISOString();
       saveState();
       render();
     }
 
-    function editBlockReps(blockId) {
+    function editBlockRepTarget(blockId) {
       const block = state.blocks[blockId];
-      const current = getBlockReps(block);
-      const input = prompt("Set repetitions from 0 to 100", String(current));
+      const current = getBlockRepTarget(block);
+      const input = prompt("Set repetition target", String(current));
       if (input === null) return;
       const next = Number(input);
-      if (!Number.isFinite(next)) {
-        alert("Please enter a number between 0 and 100.");
+      if (!Number.isFinite(next) || next <= 0) {
+        alert("Please enter a number between 1 and 999.");
         return;
       }
-      block.reps = Math.max(0, Math.min(100, Math.round(next)));
-      block.lastAttemptAt = new Date().toISOString();
+      block.repTarget = Math.max(1, Math.min(999, Math.round(next)));
       saveState();
       render();
     }
@@ -2745,8 +2753,8 @@
         button.addEventListener("click", () => changeBlockReps(button.dataset.rep, button.dataset.delta));
       });
 
-      document.querySelectorAll("[data-edit-reps]").forEach(button => {
-        button.addEventListener("click", () => editBlockReps(button.dataset.editReps));
+      document.querySelectorAll("[data-edit-target]").forEach(button => {
+        button.addEventListener("click", () => editBlockRepTarget(button.dataset.editTarget));
       });
 
       document.querySelectorAll("[data-memorized]").forEach(button => {

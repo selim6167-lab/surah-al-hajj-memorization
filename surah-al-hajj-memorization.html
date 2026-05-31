@@ -1738,6 +1738,12 @@
       background: #d8f5d8;
     }
 
+    .ayah-memory-action.active {
+      color: #f2f2f2;
+      border: 1px solid rgba(255,159,52,.28);
+      background: #2f2f2f;
+    }
+
     .ayah-memory-action {
       grid-column: 1 / -1;
     }
@@ -1745,6 +1751,10 @@
     .ayah-toggle.open {
       color: #071207;
       background: #d8f5d8;
+    }
+
+    .ayah-toggle.wide {
+      grid-column: 1 / -1;
     }
 
     .ayah-card-actions .ayah-arabic {
@@ -2665,6 +2675,7 @@
           <div class="ayah-repair-list">
             ${getAyatForBlock(block).map(ayah => {
               const reps = getAyahReps(ayah);
+              const isMemorized = (ayah.stageIndex ?? -1) >= 0;
               return `
               <div class="ayah-repair-row ${getItemColorState(ayah)}">
                 <span class="ayah-num">${ayah.ayahNumber}</span>
@@ -2679,11 +2690,9 @@
                   <button class="ayah-rep-button plus" data-ayah-rep="${ayah.ayahNumber}" data-delta="1">+1</button>
                 </div>
                 <div class="ayah-card-actions">
-                  ${ayah.stageIndex >= 0
-                    ? `<button class="ayah-memory-action" data-ayah-unmemorize="${ayah.ayahNumber}">Unmark Memorized</button>`
-                    : `<button class="ayah-memory-action ${reps > 0 ? "ready" : ""}" data-ayah-memorized="${ayah.ayahNumber}">Mark Memorized</button>`}
-                  <button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>
-                  <button class="ayah-toggle" data-ayah-toggle="${ayah.ayahNumber}">Show ayah</button>
+                  <button class="ayah-memory-action ${isMemorized ? "active" : reps > 0 ? "ready" : ""}" data-ayah-memory-toggle="${ayah.ayahNumber}">${isMemorized ? "Forget this ayah" : "I know this ayah"}</button>
+                  ${isMemorized ? `<button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>` : ""}
+                  <button class="ayah-toggle ${isMemorized ? "" : "wide"}" data-ayah-toggle="${ayah.ayahNumber}">Show ayah</button>
                   <div class="ayah-arabic hidden" data-ayah-text="${ayah.ayahNumber}">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
                 </div>
               </div>
@@ -3349,6 +3358,15 @@
       clearAyahMemory(ayahNumber, false);
     }
 
+    function toggleAyahMemorized(ayahNumber) {
+      const ayah = state.ayat[String(ayahNumber)];
+      if ((ayah.stageIndex ?? -1) >= 0) {
+        unmemorizeAyah(ayahNumber);
+        return;
+      }
+      markAyahMemorized(ayahNumber);
+    }
+
     function clearBlockMemory(blockId, includeReps) {
       const block = state.blocks[blockId];
       if (includeReps) block.reps = 0;
@@ -3435,12 +3453,8 @@
         button.addEventListener("click", () => toggleBlockMemorized(button.dataset.memoryToggle));
       });
 
-      document.querySelectorAll("[data-ayah-memorized]").forEach(button => {
-        button.addEventListener("click", () => markAyahMemorized(button.dataset.ayahMemorized));
-      });
-
-      document.querySelectorAll("[data-ayah-unmemorize]").forEach(button => {
-        button.addEventListener("click", () => unmemorizeAyah(button.dataset.ayahUnmemorize));
+      document.querySelectorAll("[data-ayah-memory-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleAyahMemorized(button.dataset.ayahMemoryToggle));
       });
 
       document.querySelectorAll("[data-ayah-toggle]").forEach(button => {

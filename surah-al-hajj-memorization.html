@@ -647,12 +647,13 @@
     .modal {
       position: fixed;
       inset: 0;
-      z-index: 10;
+      z-index: 80;
       display: none;
       place-items: center;
-      padding: 18px;
+      padding: 12px;
       background: rgba(0, 0, 0, 0.72);
       backdrop-filter: blur(10px);
+      overflow: auto;
     }
 
     .modal.active {
@@ -660,7 +661,8 @@
     }
 
     .challenge {
-      width: min(860px, 100%);
+      width: min(480px, 100%);
+      max-height: calc(100dvh - 24px);
       border: 1px solid rgba(224,189,105,0.38);
       border-radius: var(--radius);
       background:
@@ -668,7 +670,8 @@
         linear-gradient(225deg, rgba(82,214,220,0.10), transparent 42%),
         var(--panel-strong);
       box-shadow: 0 30px 100px rgba(0,0,0,0.65);
-      overflow: hidden;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .challenge-header {
@@ -1566,6 +1569,54 @@
       text-align: right;
       font-family: "Amiri", "Scheherazade New", Georgia, serif;
       font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .ayah-card-actions {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 2px;
+    }
+
+    .ayah-recall,
+    .ayah-disclosure summary {
+      display: grid;
+      place-items: center;
+      min-height: 42px;
+      border-radius: 12px;
+      background: #303030;
+      color: #f2f2f2;
+      font-size: .86rem;
+      font-weight: 850;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .ayah-recall {
+      border: 0;
+    }
+
+    .ayah-disclosure summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .ayah-disclosure[open] summary {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .ayah-disclosure:not([open]) .ayah-arabic {
+      display: none;
+    }
+
+    .ayah-disclosure .ayah-arabic {
+      margin-top: 9px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #1d1d1d;
+      color: #f5f0e6;
     }
 
     .recall-section {
@@ -1620,6 +1671,64 @@
       color: #a8a8ad;
       font-size: .72rem;
       font-weight: 700;
+    }
+
+    @media (max-width: 520px) {
+      .modal {
+        align-items: start;
+        padding: 10px;
+      }
+
+      .challenge {
+        width: 100%;
+        max-height: calc(100dvh - 20px);
+        border-radius: 16px;
+      }
+
+      .challenge-header {
+        padding: 14px;
+      }
+
+      .challenge-header h2 {
+        font-size: 1.65rem;
+      }
+
+      .challenge-body {
+        gap: 11px;
+        padding: 14px;
+      }
+
+      .cue-box {
+        min-height: 112px;
+        padding: 14px;
+      }
+
+      .cue-main {
+        font-size: 2.2rem;
+      }
+
+      .cue-arabic {
+        font-size: 2.15rem;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .result-action {
+        min-height: 48px;
+        font-size: .82rem;
+      }
+
+      .ayah-repair-row,
+      .recall-row {
+        grid-template-columns: auto 1fr;
+      }
+
+      .score-pair {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
     }
 
     .motto {
@@ -2391,14 +2500,21 @@
           <h3>Ayat in this block</h3>
           <div class="ayah-repair-list">
             ${getAyatForBlock(block).map(ayah => `
-              <button class="ayah-repair-row ${getItemColorState(ayah)}" data-start="ayah" data-target="${ayah.ayahNumber}">
+              <div class="ayah-repair-row ${getItemColorState(ayah)}">
                 <span class="ayah-num">${ayah.ayahNumber}</span>
                 <span class="ayah-repair-main">
                   <strong>Ayah ${ayah.ayahNumber} · ${ayah.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(ayah)))}</strong>
-                  <span class="ayah-arabic">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</span>
+                  <span>${escapeHtml(formatDue(ayah))} · Stage: ${escapeHtml(ayah.stageName || "Not started")}</span>
                 </span>
                 <span class="score-pair">${ayah.retention || 0}%<span>${escapeHtml(formatDue(ayah))}</span></span>
-              </button>
+                <div class="ayah-card-actions">
+                  <button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>
+                  <details class="ayah-disclosure">
+                    <summary>Show ayah</summary>
+                    <div class="ayah-arabic">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
+                  </details>
+                </div>
+              </div>
             `).join("")}
           </div>
         </section>
@@ -2439,7 +2555,7 @@
       const title = row.type === "ayah" ? `Ayah ${item.ayahNumber}` : `Verses ${item.ayahRange[0]}-${item.ayahRange[1]}`;
       const score = row.type === "ayah" ? item.retention || 0 : item.retention || 0;
       const subtitle = row.type === "ayah"
-        ? `${escapeHtml(AYAH_FIRST_WORDS[item.ayahNumber] || "")} · ${escapeHtml(formatDue(item))}`
+        ? `Ayah recall · ${escapeHtml(formatDue(item))}`
         : `Block fluency · ${escapeHtml(formatDue(item))}`;
       return `
         <button class="recall-row ${getItemColorState(item)}" data-start="${row.type}" data-target="${escapeHtml(targetId)}">

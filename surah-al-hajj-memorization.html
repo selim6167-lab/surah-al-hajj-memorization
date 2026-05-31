@@ -1236,7 +1236,7 @@
       bottom: 0;
       z-index: 20;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       width: min(100vw, 480px);
       transform: translateX(-50%);
       min-height: 78px;
@@ -1482,6 +1482,144 @@
 
     .review-button.failed {
       background: #733030;
+    }
+
+    .ayah-repair {
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .ayah-repair-list,
+    .recall-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ayah-repair-row,
+    .recall-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 68px;
+      padding: 12px;
+      color: #f1f1f2;
+      border: 1px solid #343434;
+      border-left: 5px solid var(--state-color, #777);
+      border-radius: 14px;
+      background: #252525;
+      text-align: left;
+    }
+
+    .ayah-repair-row.state-new,
+    .recall-row.state-new {
+      --state-color: #777;
+    }
+
+    .ayah-repair-row.state-stable,
+    .recall-row.state-stable {
+      --state-color: #4dc65b;
+    }
+
+    .ayah-repair-row.state-soon,
+    .recall-row.state-soon {
+      --state-color: #ff9f34;
+    }
+
+    .ayah-repair-row.state-needed,
+    .recall-row.state-needed {
+      --state-color: #ff4e4e;
+    }
+
+    .ayah-num,
+    .recall-kind {
+      display: grid;
+      place-items: center;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      color: var(--state-color, #777);
+      font-weight: 900;
+    }
+
+    .ayah-repair-main strong,
+    .recall-main strong {
+      display: block;
+      color: #f3f3f3;
+      font-size: .98rem;
+      line-height: 1.25;
+    }
+
+    .ayah-repair-main span,
+    .recall-main span {
+      display: block;
+      margin-top: 4px;
+      color: #a8a8ad;
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+
+    .ayah-arabic {
+      direction: rtl;
+      text-align: right;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 1rem;
+    }
+
+    .recall-section {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .recall-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+      color: #f1f1f2;
+      font-size: 1.2rem;
+      font-weight: 850;
+    }
+
+    .recall-heading span {
+      color: #9e9ea4;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .recall-subhead {
+      margin: 8px 0 0;
+      color: #9e9ea4;
+      font-size: .82rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .recall-empty {
+      padding: 14px;
+      border-radius: 14px;
+      background: #242424;
+      color: #9e9ea4;
+      font-size: .9rem;
+    }
+
+    .score-pair {
+      display: grid;
+      gap: 2px;
+      color: var(--state-color, #4dc65b);
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .score-pair span {
+      color: #a8a8ad;
+      font-size: .72rem;
+      font-weight: 700;
     }
 
     .motto {
@@ -1808,7 +1946,7 @@
 
     function mergeWithInitial(saved) {
       const initial = createInitialState();
-      return {
+      return hydrateAyatFromStartedBlocks({
         ...initial,
         ...saved,
         settings: { ...initial.settings, ...(saved.settings || {}) },
@@ -1818,7 +1956,27 @@
         blocks: { ...initial.blocks, ...(saved.blocks || {}) },
         todayBlocks: Array.isArray(saved.todayBlocks) ? saved.todayBlocks : initial.todayBlocks,
         unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : []
-      };
+      });
+    }
+
+    function hydrateAyatFromStartedBlocks(nextState) {
+      Object.values(nextState.blocks).forEach(block => {
+        if ((block.stageIndex ?? -1) < 0 || !(block.retention || 0)) return;
+        const ayat = range(block.ayahRange[0], block.ayahRange[1]).map(ayah => nextState.ayat[String(ayah)]).filter(Boolean);
+        if (!ayat.length) return;
+        ayat.forEach(ayah => {
+          if ((ayah.stageIndex ?? -1) >= 0 || (ayah.retention || 0) > 0) return;
+          ayah.retention = block.retention || 0;
+          ayah.stageIndex = block.stageIndex;
+          ayah.stageName = block.stageName || "Not started";
+          ayah.firstLockedAt = block.firstLockedAt;
+          ayah.lastSuccessfulRecallAt = block.lastSuccessfulRecallAt;
+          ayah.nextDueAt = block.nextDueAt;
+          ayah.lastResult = block.lastResult;
+          ayah.lastAttemptAt = block.lastAttemptAt;
+        });
+      });
+      return nextState;
     }
 
     function saveState() {
@@ -1943,6 +2101,10 @@
       if (result === "minor") outcome = applyMinorHesitation(item, now);
       if (result === "cue") outcome = applyNeededCue(item, now);
       if (result === "failed") outcome = applyFailedRecall(item, now);
+      if (targetType === "block" && result === "perfect") {
+        item.reps = Math.max(getBlockReps(item), 1);
+        recordImplicitAyahSuccess(item, now);
+      }
 
       const attempt = {
         targetType,
@@ -1982,6 +2144,26 @@
       return `Recorded. Retention remains ${item.retention || 0}% at ${stage}.`;
     }
 
+    function recordImplicitAyahSuccess(block, now = Date.now()) {
+      getAyatForBlock(block).forEach(ayah => {
+        const previousRetention = ayah.retention || 0;
+        const outcome = applyPerfectRecall(ayah, now);
+        ayah.attempts = Array.isArray(ayah.attempts) ? ayah.attempts : [];
+        ayah.attempts.push({
+          targetType: "ayah",
+          targetId: String(ayah.ayahNumber),
+          source: "block",
+          sourceId: block.id,
+          result: "perfect",
+          attemptedAt: new Date(now).toISOString(),
+          previousRetention,
+          newRetention: ayah.retention || 0,
+          advanced: outcome.advanced
+        });
+        if (ayah.attempts.length > 40) ayah.attempts = ayah.attempts.slice(-40);
+      });
+    }
+
     function updateStreak() {
       const today = localDay();
       const last = state.streak.lastCompletedReviewDate;
@@ -1997,7 +2179,8 @@
       const sectionAyat = Object.values(state.ayat).filter(item => item.sectionId === sectionId);
       const sectionBlocks = Object.values(state.blocks).filter(item => item.sectionId === sectionId);
       const avg = arr => arr.length ? arr.reduce((sum, item) => sum + (item.retention || 0), 0) / arr.length : 0;
-      return Math.round((avg(sectionAyat) * 0.7) + (avg(sectionBlocks) * 0.3));
+      const avgBlocks = sectionBlocks.length ? sectionBlocks.reduce((sum, block) => sum + getBlockDisplayRetention(block), 0) / sectionBlocks.length : 0;
+      return Math.round((avg(sectionAyat) * 0.7) + (avgBlocks * 0.3));
     }
 
     function updateSectionUnlocks() {
@@ -2054,7 +2237,7 @@
         ["7-Day Hold", hasRetention(70)],
         ["30-Day Hold", hasRetention(90)],
         ["Deep Retention", hasRetention(100)],
-        ["First Block Stabilized", Object.values(state.blocks).some(item => (item.retention || 0) >= 70)],
+        ["First Block Stabilized", Object.values(state.blocks).some(item => getBlockDisplayRetention(item) >= 70)],
         ["First Section Unlock", Boolean(state.sections["2"]?.unlocked)]
       ].forEach(([name, achieved]) => {
         if (achieved) unlocked.add(name);
@@ -2094,6 +2277,7 @@
     }
 
     function renderActiveTab() {
+      if (ui.activeTab === "recall") return renderRecallTab();
       if (ui.activeTab === "quran") return renderQuranTab();
       if (ui.activeTab === "progress") return renderProgressTab();
       if (ui.activeTab === "settings") return renderSettingsTab();
@@ -2128,13 +2312,16 @@
       const reps = getBlockReps(block);
       const target = getBlockRepTarget(block);
       const percent = Math.min(100, Math.round((reps / target) * 100));
-      const section = state.sections[String(block.sectionId)];
+      const displayRetention = getBlockDisplayRetention(block);
+      const weakest = getWeakestAyah(block);
+      const combinedStatus = getBlockCombinedStatus(block);
       const stateClass = getBlockColorState(block);
       return `
         <button class="memory-card ${stateClass}" data-open-block="${escapeHtml(block.id)}">
           <span>
             <span class="memory-title">Al-Hajj - الحج</span>
-            <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${block.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(block)))}</span>
+            <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${displayRetention}% visible · ${escapeHtml(statusLabel(combinedStatus))}</span>
+            <span class="memory-subtitle">Block ${block.retention || 0}% · weakest Ayah ${weakest?.ayahNumber || "-"} ${weakest?.retention || 0}%</span>
           </span>
           <span class="memory-reps">${reps}<span>/${target}</span></span>
           <span class="thin-progress" style="--w:${percent}%"><span></span></span>
@@ -2146,7 +2333,8 @@
       const block = state.blocks[blockId];
       const reps = getBlockReps(block);
       const target = getBlockRepTarget(block);
-      const strength = block.retention ? Math.max(1, Math.min(5, Math.ceil((block.retention || 0) / 20))) : 0;
+      const displayRetention = getBlockDisplayRetention(block);
+      const strength = displayRetention ? Math.max(1, Math.min(5, Math.ceil(displayRetention / 20))) : 0;
       const progress = Math.min(100, Math.round((reps / target) * 100));
       return `
         <header class="detail-header">
@@ -2165,6 +2353,7 @@
           <div class="muted-label" style="margin-top:32px">Strength</div>
           <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
           ${renderReviewCard(block)}
+          ${renderBlockAyahList(block)}
           <button class="memorized-btn ${reps > 0 ? "ready" : ""}" data-memorized="${escapeHtml(block.id)}">✓ Mark as Memorized</button>
           ${block.stageIndex >= 0 ? `<button class="memorized-btn" style="margin-top:12px;min-height:54px;" data-unmemorize="${escapeHtml(block.id)}">Unmark as Memorized</button>` : ""}
           <div class="motto">Not speed. Solidity.</div>
@@ -2173,12 +2362,16 @@
     }
 
     function renderReviewCard(block) {
+      const weakest = getWeakestAyah(block);
+      const displayRetention = getBlockDisplayRetention(block);
       return `
         <section class="review-card">
-          <h3>Spaced review</h3>
+          <h3>Block spaced review</h3>
           <div class="review-meta">
             <div><span>Stage</span><strong>${escapeHtml(block.stageName || "Not started")}</strong></div>
-            <div><span>Retention</span><strong>${block.retention || 0}%</strong></div>
+            <div><span>Block fluency</span><strong>${block.retention || 0}%</strong></div>
+            <div><span>Visible score</span><strong>${displayRetention}%</strong></div>
+            <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
             <div><span>Status</span><strong>${escapeHtml(statusLabel(getDueStatus(block)))}</strong></div>
             <div><span>Next due</span><strong>${escapeHtml(formatDue(block))}</strong></div>
           </div>
@@ -2189,6 +2382,74 @@
             <button class="review-button failed" data-block-result="${escapeHtml(block.id)}" data-result="failed">Failed</button>
           </div>
         </section>
+      `;
+    }
+
+    function renderBlockAyahList(block) {
+      return `
+        <section class="review-card ayah-repair">
+          <h3>Ayat in this block</h3>
+          <div class="ayah-repair-list">
+            ${getAyatForBlock(block).map(ayah => `
+              <button class="ayah-repair-row ${getItemColorState(ayah)}" data-start="ayah" data-target="${ayah.ayahNumber}">
+                <span class="ayah-num">${ayah.ayahNumber}</span>
+                <span class="ayah-repair-main">
+                  <strong>Ayah ${ayah.ayahNumber} · ${ayah.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(ayah)))}</strong>
+                  <span class="ayah-arabic">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</span>
+                </span>
+                <span class="score-pair">${ayah.retention || 0}%<span>${escapeHtml(formatDue(ayah))}</span></span>
+              </button>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderRecallTab() {
+      const dueStatuses = ["due_now", "overdue", "decay_risk"];
+      const soonStatuses = ["due_soon"];
+      const dueBlockRows = getRecallRows("block", dueStatuses);
+      const dueAyahRows = getRecallRows("ayah", dueStatuses);
+      const soonBlockRows = getRecallRows("block", soonStatuses);
+      const soonAyahRows = getRecallRows("ayah", soonStatuses);
+      const dueCount = dueBlockRows.length + dueAyahRows.length;
+      const soonCount = soonBlockRows.length + soonAyahRows.length;
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Recall <span class="count-pill">${dueCount}</span></h2>
+        ${renderRecallSection("Due Now", `${dueCount} due`, dueBlockRows, dueAyahRows)}
+        ${renderRecallSection("Coming Soon", `${soonCount} soon`, soonBlockRows, soonAyahRows)}
+      `;
+    }
+
+    function renderRecallSection(title, subtitle, blockRows, ayahRows) {
+      return `
+        <section class="recall-section">
+          <div class="recall-heading">${escapeHtml(title)} <span>${escapeHtml(subtitle)}</span></div>
+          <div class="recall-subhead">Blocks</div>
+          ${blockRows.length ? `<div class="recall-stack">${blockRows.map(renderRecallRow).join("")}</div>` : `<div class="recall-empty">No block recall here.</div>`}
+          <div class="recall-subhead">Ayat</div>
+          ${ayahRows.length ? `<div class="recall-stack">${ayahRows.map(renderRecallRow).join("")}</div>` : `<div class="recall-empty">No ayah recall here.</div>`}
+        </section>
+      `;
+    }
+
+    function renderRecallRow(row) {
+      const item = row.item;
+      const targetId = row.type === "ayah" ? item.ayahNumber : item.id;
+      const title = row.type === "ayah" ? `Ayah ${item.ayahNumber}` : `Verses ${item.ayahRange[0]}-${item.ayahRange[1]}`;
+      const score = row.type === "ayah" ? item.retention || 0 : item.retention || 0;
+      const subtitle = row.type === "ayah"
+        ? `${escapeHtml(AYAH_FIRST_WORDS[item.ayahNumber] || "")} · ${escapeHtml(formatDue(item))}`
+        : `Block fluency · ${escapeHtml(formatDue(item))}`;
+      return `
+        <button class="recall-row ${getItemColorState(item)}" data-start="${row.type}" data-target="${escapeHtml(targetId)}">
+          <span class="recall-kind">${row.type === "ayah" ? "A" : "B"}</span>
+          <span class="recall-main">
+            <strong>${escapeHtml(title)} · ${score}% · ${escapeHtml(statusLabel(row.status))}</strong>
+            <span>${subtitle}</span>
+          </span>
+          <span class="score-pair">${score}%<span>${escapeHtml(item.stageName || "Not started")}</span></span>
+        </button>
       `;
     }
 
@@ -2249,6 +2510,7 @@
     function renderTabBar() {
       const tabs = [
         ["today", "☼", "Today"],
+        ["recall", "R", "Recall"],
         ["quran", "▯", "Quran"],
         ["progress", "%", "Progress"],
         ["settings", "⚙", "Settings"]
@@ -2631,12 +2893,60 @@
       return BLOCKS.map(block => state.blocks[block.id]).filter(Boolean);
     }
 
-    function getBlockColorState(block) {
-      const status = getDueStatus(block);
-      if ((block.stageIndex ?? -1) < 0 || !(block.retention || 0)) return "state-new";
+    function getAyatForBlock(block) {
+      return range(block.ayahRange[0], block.ayahRange[1]).map(ayah => state.ayat[String(ayah)]).filter(Boolean);
+    }
+
+    function getWeakestAyah(block) {
+      const ayat = getAyatForBlock(block);
+      if (!ayat.length) return null;
+      return ayat.reduce((weakest, ayah) => (ayah.retention || 0) < (weakest.retention || 0) ? ayah : weakest, ayat[0]);
+    }
+
+    function getBlockDisplayRetention(block) {
+      const weakest = getWeakestAyah(block);
+      if (!weakest) return block.retention || 0;
+      return Math.min(block.retention || 0, weakest.retention || 0);
+    }
+
+    function getWorstRecallStatus(items) {
+      return items
+        .map(item => getDueStatus(item))
+        .sort((a, b) => statusWeight(b) - statusWeight(a))[0] || "not_started";
+    }
+
+    function getBlockCombinedStatus(block) {
+      return getWorstRecallStatus([block, ...getAyatForBlock(block)]);
+    }
+
+    function getItemColorState(item) {
+      const status = getDueStatus(item);
+      if ((item.stageIndex ?? -1) < 0 || !(item.retention || 0)) return "state-new";
       if (status === "due_soon") return "state-soon";
       if (["due_now", "overdue", "decay_risk"].includes(status)) return "state-needed";
       return "state-stable";
+    }
+
+    function getBlockColorState(block) {
+      const status = getBlockCombinedStatus(block);
+      if (!getBlockDisplayRetention(block)) return "state-new";
+      if (status === "due_soon") return "state-soon";
+      if (["due_now", "overdue", "decay_risk"].includes(status)) return "state-needed";
+      return "state-stable";
+    }
+
+    function getRecallRows(type, statuses) {
+      const items = type === "ayah" ? Object.values(state.ayat) : getAllOrderedBlocks();
+      return items
+        .filter(item => state.sections[String(item.sectionId)]?.unlocked)
+        .map(item => ({ type, item, status: getDueStatus(item), weight: statusWeight(getDueStatus(item)) }))
+        .filter(row => statuses.includes(row.status))
+        .sort((a, b) => b.weight - a.weight || compareRecallOrder(a, b));
+    }
+
+    function compareRecallOrder(a, b) {
+      if (a.type === "ayah") return a.item.ayahNumber - b.item.ayahNumber;
+      return BLOCKS.findIndex(block => block.id === a.item.id) - BLOCKS.findIndex(block => block.id === b.item.id);
     }
 
     function changeBlockReps(blockId, delta) {
@@ -2668,21 +2978,25 @@
 
     function recordBlockRecall(blockId, result) {
       const block = state.blocks[blockId];
+      const now = Date.now();
       const previousUnlocked = unlockedSectionIds();
       const previousRetention = block.retention || 0;
       const priorDueStatus = getDueStatus(block);
       let outcome;
-      if (result === "perfect") outcome = applyPerfectRecall(block);
-      if (result === "minor") outcome = applyMinorHesitation(block);
-      if (result === "cue") outcome = applyNeededCue(block);
-      if (result === "failed") outcome = applyFailedRecall(block);
-      if (result === "perfect") block.reps = Math.max(getBlockReps(block), 1);
+      if (result === "perfect") outcome = applyPerfectRecall(block, now);
+      if (result === "minor") outcome = applyMinorHesitation(block, now);
+      if (result === "cue") outcome = applyNeededCue(block, now);
+      if (result === "failed") outcome = applyFailedRecall(block, now);
+      if (result === "perfect") {
+        block.reps = Math.max(getBlockReps(block), 1);
+        recordImplicitAyahSuccess(block, now);
+      }
       block.attempts = Array.isArray(block.attempts) ? block.attempts : [];
       block.attempts.push({
         targetType: "block",
         targetId: blockId,
         result,
-        attemptedAt: new Date().toISOString(),
+        attemptedAt: new Date(now).toISOString(),
         previousRetention,
         newRetention: block.retention || 0,
         advanced: outcome.advanced
@@ -2965,6 +3279,8 @@
           if (!confirm("Replace current campaign progress with this backup?")) return;
           state = recalculate(mergeWithInitial(parsed));
           saveState();
+          ui.activeTab = "today";
+          ui.currentBlockId = null;
           ui.selectedSectionId = 1;
           ui.selectedBlockId = "1-7";
           ui.selectedAyah = 1;
@@ -2983,6 +3299,8 @@
       state = createInitialState();
       saveState();
       ui = {
+        activeTab: "today",
+        currentBlockId: null,
         selectedSectionId: 1,
         selectedBlockId: "1-7",
         selectedAyah: 1,

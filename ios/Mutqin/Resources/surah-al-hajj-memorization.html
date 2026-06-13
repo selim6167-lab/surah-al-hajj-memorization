@@ -1,0 +1,3737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surah Al-Hajj - Memorization Campaign</title>
+  <style>
+    :root {
+      --bg: #05070a;
+      --bg-2: #0b1117;
+      --ink: #f5f2e8;
+      --muted: #9fa8ac;
+      --dim: #566066;
+      --line: rgba(224, 189, 105, 0.23);
+      --gold: #e0bd69;
+      --gold-2: #fff0a8;
+      --cyan: #52d6dc;
+      --orange: #ff9a55;
+      --red: #ff5d5d;
+      --emerald: #64d794;
+      --panel: rgba(15, 20, 24, 0.78);
+      --panel-strong: rgba(18, 25, 30, 0.94);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(82, 214, 220, 0.14), transparent 25%),
+        radial-gradient(circle at 84% 14%, rgba(224, 189, 105, 0.14), transparent 26%),
+        linear-gradient(135deg, #030405 0%, #0a1112 45%, #060806 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.32;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 86%);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      width: min(1820px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 34px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .brand-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 168px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(115deg, rgba(224, 189, 105, 0.12), transparent 34%),
+        linear-gradient(155deg, rgba(82, 214, 220, 0.12), transparent 44%),
+        var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 920px;
+      margin: 10px 0 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.1rem, 5vw, 4.9rem);
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 880px;
+      margin: 0;
+      color: #c5c3b6;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 10px;
+      min-width: min(720px, 44vw);
+    }
+
+    .metric {
+      min-height: 78px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(8, 12, 14, 0.72);
+      box-shadow: inset 0 0 26px rgba(255,255,255,0.018);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 1.35rem;
+      line-height: 1.1;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 330px minmax(0, 1fr) 340px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 15px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .panel-title {
+      margin: 0;
+      color: var(--gold-2);
+      font-size: 0.85rem;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .panel-body {
+      padding: 16px;
+    }
+
+    .section-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-card {
+      width: 100%;
+      padding: 14px;
+      color: var(--ink);
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.05), transparent),
+        rgba(7, 11, 13, 0.85);
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .section-card:not(:disabled):hover,
+    .section-card.active {
+      transform: translateY(-2px);
+      border-color: rgba(224, 189, 105, 0.62);
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28), 0 0 30px rgba(224,189,105,0.08);
+    }
+
+    .section-card.locked {
+      opacity: 0.58;
+      filter: saturate(0.72);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 44px 1fr 58px;
+      gap: 11px;
+      align-items: center;
+    }
+
+    .section-mark,
+    .node-ring,
+    .compact-ring {
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: conic-gradient(var(--gold) var(--ring, 0%), rgba(255,255,255,0.1) 0);
+    }
+
+    .section-mark {
+      width: 44px;
+      height: 44px;
+      color: #10100a;
+      font-weight: 950;
+      box-shadow: 0 0 20px rgba(224,189,105,0.12);
+    }
+
+    .section-mark::before,
+    .node-ring::before,
+    .compact-ring::before {
+      content: attr(data-label);
+      display: grid;
+      place-items: center;
+      width: calc(100% - 8px);
+      height: calc(100% - 8px);
+      border-radius: inherit;
+      background: #101519;
+      color: var(--ink);
+    }
+
+    .section-name {
+      display: block;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .section-meta {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .lock-state {
+      justify-self: end;
+      padding: 6px 8px;
+      color: var(--cyan);
+      border: 1px solid rgba(82,214,220,0.23);
+      border-radius: 999px;
+      background: rgba(82,214,220,0.06);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .locked .lock-state {
+      color: var(--dim);
+      border-color: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .progress-line {
+      height: 7px;
+      margin-top: 13px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .progress-line > span {
+      display: block;
+      height: 100%;
+      width: var(--w, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--gold), var(--emerald));
+    }
+
+    .section-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(100deg, rgba(224,189,105,0.11), transparent 45%),
+        rgba(255,255,255,0.02);
+    }
+
+    .section-hero h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.6rem, 3vw, 3.1rem);
+      letter-spacing: 0;
+    }
+
+    .hero-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      color: #d9d5c3;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .chip.gold {
+      color: var(--gold-2);
+      border-color: rgba(224,189,105,0.25);
+      background: rgba(224,189,105,0.08);
+    }
+
+    .big-ring {
+      display: grid;
+      place-items: center;
+      width: 132px;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      background: conic-gradient(var(--gold) var(--ring, 0%), rgba(255,255,255,0.08) 0);
+      box-shadow: 0 0 42px rgba(224,189,105,0.1);
+    }
+
+    .big-ring > div {
+      display: grid;
+      place-items: center;
+      width: 104px;
+      aspect-ratio: 1;
+      border-radius: inherit;
+      background: #0b1013;
+      color: var(--gold-2);
+      font-size: 1.8rem;
+      font-weight: 950;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.9fr) minmax(300px, 1.2fr);
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .block-button,
+    .mission-button,
+    .mini-item {
+      width: 100%;
+      color: var(--ink);
+      text-align: left;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(7, 11, 13, 0.72);
+    }
+
+    .block-button {
+      padding: 13px;
+      transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .block-button:hover,
+    .block-button.active,
+    .mission-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(82,214,220,0.45);
+    }
+
+    .block-top {
+      display: grid;
+      grid-template-columns: 1fr 42px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .block-title {
+      display: block;
+      font-weight: 950;
+    }
+
+    .block-subtitle {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .compact-ring {
+      width: 42px;
+      height: 42px;
+      font-size: 0.7rem;
+      font-weight: 950;
+    }
+
+    .due-text {
+      margin-top: 10px;
+      color: #c5c3b6;
+      font-size: 0.78rem;
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+      gap: 10px;
+    }
+
+    .ayah-node {
+      min-height: 84px;
+      padding: 9px;
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(5, 8, 9, 0.78);
+      text-align: center;
+      transition: transform 150ms ease, border-color 150ms ease;
+    }
+
+    .ayah-node:hover,
+    .ayah-node.active {
+      transform: translateY(-2px);
+      border-color: rgba(224,189,105,0.5);
+    }
+
+    .node-ring {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 7px;
+      font-size: 0.78rem;
+      font-weight: 950;
+    }
+
+    .node-state {
+      display: block;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .detail-panel {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(3, 6, 7, 0.68);
+    }
+
+    .detail-panel h3 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.45rem;
+      letter-spacing: 0;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .detail-cell {
+      min-height: 62px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .detail-cell span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .detail-cell strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink);
+      font-size: 0.98rem;
+    }
+
+    .primary-action,
+    .secondary-action,
+    .danger-action,
+    .result-action {
+      min-height: 42px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-weight: 950;
+      letter-spacing: 0.02em;
+    }
+
+    .primary-action {
+      color: #070806;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+      box-shadow: 0 12px 30px rgba(224,189,105,0.18);
+    }
+
+    .secondary-action {
+      color: var(--ink);
+      border: 1px solid rgba(82,214,220,0.22);
+      background: rgba(82,214,220,0.08);
+    }
+
+    .danger-action {
+      color: #fff2ed;
+      border: 1px solid rgba(255,93,93,0.24);
+      background: rgba(255,93,93,0.09);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .right-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mission-list,
+    .mini-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .mission-button {
+      padding: 11px;
+    }
+
+    .mission-button strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .mission-button span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .mini-item {
+      padding: 10px;
+    }
+
+    .mini-item strong {
+      display: block;
+      font-size: 0.86rem;
+    }
+
+    .mini-item span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .toolbar button,
+    .file-label {
+      display: grid;
+      place-items: center;
+      min-height: 38px;
+      padding: 8px;
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.04);
+      font-size: 0.75rem;
+      font-weight: 950;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .file-label input {
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: start;
+      justify-items: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      overflow: auto;
+    }
+
+    .modal.active {
+      display: grid;
+    }
+
+    .challenge {
+      width: min(390px, 100%);
+      max-height: calc(100dvh - 20px);
+      border: 1px solid #303030;
+      border-radius: 22px;
+      background: #181818;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.66);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .challenge-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid #252525;
+      background: #090909;
+    }
+
+    .challenge .eyebrow {
+      color: #9b9ba0;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .challenge-header h2 {
+      margin: 3px 0 0;
+      color: #f2f2f2;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1.55rem;
+      line-height: 1.05;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .close-btn {
+      width: 44px;
+      height: 44px;
+      color: #f2f2f2;
+      border: 1px solid #424242;
+      border-radius: 999px;
+      background: #2a2a2a;
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .challenge-body {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .challenge .detail-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .challenge .detail-cell {
+      min-height: 66px;
+      padding: 10px;
+      border: 0;
+      border-radius: 14px;
+      background: #252525;
+    }
+
+    .challenge .detail-cell span {
+      color: #9e9ea4;
+      font-size: .62rem;
+      letter-spacing: .08em;
+    }
+
+    .challenge .detail-cell strong {
+      margin-top: 4px;
+      color: #f2f2f2;
+      font-size: .88rem;
+      line-height: 1.2;
+    }
+
+    .challenge .action-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .challenge .secondary-action {
+      min-height: 44px;
+      padding: 9px;
+      color: #f2f2f2;
+      border: 0;
+      border-radius: 14px;
+      background: #303030;
+      font-size: .86rem;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .cue-box {
+      min-height: 96px;
+      padding: 16px;
+      border: 0;
+      border-radius: 16px;
+      background: #111111;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .cue-label {
+      color: #9e9ea4;
+      font-size: .68rem;
+      font-weight: 850;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .cue-main {
+      margin-top: 8px;
+      color: #f2f2f2;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 2rem;
+      line-height: 1.05;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .cue-arabic {
+      direction: rtl;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 2rem;
+      line-height: 1.4;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .result-action {
+      min-height: 54px;
+      color: #f3f3f3;
+      border: 0;
+      border-radius: 14px;
+      background: #303030;
+      font-size: .92rem;
+      font-weight: 850;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .result-action.perfect {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .result-action.minor {
+      color: #071013;
+      background: #b9edf0;
+    }
+
+    .result-action.cue {
+      background: #674725;
+    }
+
+    .result-action.failed {
+      background: #733030;
+    }
+
+    .notice {
+      display: none;
+      padding: 12px;
+      border: 1px solid rgba(224,189,105,0.26);
+      border-radius: var(--radius);
+      background: rgba(224,189,105,0.08);
+      color: var(--gold-2);
+      font-weight: 850;
+    }
+
+    .notice.active {
+      display: block;
+    }
+
+    .status-future .node-ring,
+    .status-future .compact-ring,
+    .status-future .section-mark {
+      background: conic-gradient(var(--emerald) var(--ring, 0%), rgba(255,255,255,0.1) 0);
+    }
+
+    .status-due_soon {
+      box-shadow: 0 0 26px rgba(82,214,220,0.10);
+    }
+
+    .status-due_now {
+      box-shadow: 0 0 26px rgba(224,189,105,0.13);
+    }
+
+    .status-overdue {
+      box-shadow: 0 0 26px rgba(255,154,85,0.14);
+    }
+
+    .status-decay_risk {
+      box-shadow: 0 0 30px rgba(255,93,93,0.18);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .simple-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .main-flow {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .focus-strip,
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .focus-card {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(7, 11, 13, 0.72);
+    }
+
+    .focus-card strong {
+      display: block;
+      color: var(--gold-2);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .focus-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .reference-text {
+      direction: rtl;
+      margin-top: 10px;
+      padding: 14px;
+      color: #fbf4da;
+      border: 1px solid rgba(224,189,105,0.2);
+      border-radius: var(--radius);
+      background: rgba(224,189,105,0.07);
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 1.35rem;
+      line-height: 1.9;
+      text-align: right;
+    }
+
+    .reference-text span {
+      color: var(--cyan);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.82rem;
+      margin-left: 8px;
+    }
+
+    .reference-text p {
+      margin: 0 0 10px;
+    }
+
+    .reference-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .selected-arabic {
+      margin-top: 12px;
+    }
+
+    .surah-reference-panel {
+      margin-top: 14px;
+    }
+
+    .surah-list {
+      display: grid;
+      gap: 10px;
+      max-height: 520px;
+      overflow: auto;
+      padding-inline-end: 4px;
+    }
+
+    .surah-ayah {
+      width: 100%;
+      padding: 13px 14px;
+      color: #fbf4da;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      background: rgba(7, 11, 13, 0.72);
+      text-align: right;
+      direction: rtl;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 1.25rem;
+      line-height: 1.85;
+    }
+
+    .surah-ayah:hover,
+    .surah-ayah.active {
+      border-color: rgba(224,189,105,0.5);
+      background: rgba(224,189,105,0.08);
+    }
+
+    .surah-ayah span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 28px;
+      height: 28px;
+      margin-left: 9px;
+      color: var(--cyan);
+      border: 1px solid rgba(82,214,220,0.26);
+      border-radius: 999px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.76rem;
+      font-weight: 950;
+      direction: ltr;
+    }
+
+    @media (max-width: 1250px) {
+      .topbar,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .status-grid {
+        min-width: 0;
+      }
+
+      .main-flow,
+      .focus-strip,
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .app-shell {
+        width: min(100vw - 20px, 100%);
+        padding-top: 10px;
+      }
+
+      .brand-panel {
+        min-height: 0;
+        padding: 18px;
+      }
+
+      .status-grid,
+      .work-grid,
+      .detail-grid,
+      .result-grid,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .section-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .big-ring {
+        width: 112px;
+      }
+
+      .big-ring > div {
+        width: 88px;
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Mutqin-style mobile rebuild */
+    body {
+      background: #171717;
+      color: #f4f4f4;
+    }
+
+    body::before {
+      display: none;
+    }
+
+    .app-shell {
+      width: min(100vw, 480px);
+      min-height: 100vh;
+      padding: 0 0 104px;
+      background: #181818;
+    }
+
+    .ios-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: 88px;
+      padding: 22px 22px 20px;
+      background: #060606;
+    }
+
+    .app-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #cfe2c1, #6e8f74);
+      color: #15361d;
+      font-size: 1.45rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+    }
+
+    .app-title {
+      margin: 0;
+      color: #f1f1f1;
+      font-size: 1.45rem;
+      line-height: 1.1;
+      font-weight: 820;
+    }
+
+    .app-subtitle {
+      margin-top: 5px;
+      color: #9a9a9d;
+      direction: rtl;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: .95rem;
+    }
+
+    .screen {
+      padding: 26px 18px 10px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 18px;
+      color: #f6f6f6;
+      font-size: 1.78rem;
+      line-height: 1;
+      font-weight: 840;
+      letter-spacing: 0;
+    }
+
+    .green-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #44c653;
+      box-shadow: 0 0 18px rgba(68,198,83,.4);
+    }
+
+    .count-pill {
+      display: inline-grid;
+      place-items: center;
+      min-width: 42px;
+      height: 42px;
+      margin-left: 10px;
+      color: #44c653;
+      border-radius: 12px;
+      background: rgba(68,198,83,.12);
+      font-size: 1.28rem;
+      font-weight: 850;
+    }
+
+    .memory-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .today-section {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .today-section-head {
+      padding: 4px 2px 0;
+    }
+
+    .today-section-head strong {
+      display: block;
+      color: #f0f0f2;
+      font-size: 1.05rem;
+    }
+
+    .today-section-head span {
+      display: block;
+      margin-top: 4px;
+      color: #9e9ea4;
+      font-size: .84rem;
+    }
+
+    .add-panel {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #242424;
+    }
+
+    .add-panel h3,
+    .review-card h3 {
+      margin: 0 0 12px;
+      color: #f0f0f2;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .review-hint {
+      margin: -4px 0 14px;
+      color: #a8a8ad;
+      font-size: .88rem;
+      line-height: 1.35;
+    }
+
+    .add-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .add-chip {
+      min-height: 42px;
+      padding: 8px 10px;
+      color: #e9e9eb;
+      border: 1px solid #393939;
+      border-radius: 12px;
+      background: #303030;
+      font-size: .85rem;
+      font-weight: 760;
+    }
+
+    .add-chip.added {
+      color: #4dc65b;
+      border-color: rgba(77,198,91,.28);
+      background: rgba(77,198,91,.1);
+    }
+
+    .memory-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      width: 100%;
+      min-height: 112px;
+      padding: 24px 18px 18px 25px;
+      overflow: hidden;
+      color: #efeff1;
+      border: 0;
+      border-radius: 18px;
+      background: #252525;
+      text-align: left;
+    }
+
+    .memory-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: var(--state-color, #777);
+      box-shadow: 0 0 20px var(--state-glow, rgba(120,120,120,.35));
+    }
+
+    .memory-card.state-new {
+      --state-color: #777;
+      --state-glow: rgba(140,140,140,.35);
+    }
+
+    .memory-card.state-stable {
+      --state-color: #4dc65b;
+      --state-glow: rgba(77,198,91,.65);
+    }
+
+    .memory-card.state-soon {
+      --state-color: #ff9f34;
+      --state-glow: rgba(255,159,52,.65);
+    }
+
+    .memory-card.state-needed {
+      --state-color: #ff4e4e;
+      --state-glow: rgba(255,78,78,.65);
+    }
+
+    .block-status-ribbon {
+      --ribbon-color: #777;
+      --ribbon-bg: rgba(120,120,120,.14);
+      min-height: 54px;
+      border-top: 1px solid #202020;
+      border-bottom: 1px solid #282828;
+      background: var(--ribbon-bg);
+    }
+
+    .block-status-ribbon.state-new {
+      --ribbon-color: #8a8a8a;
+      --ribbon-bg: rgba(138,138,138,.16);
+    }
+
+    .block-status-ribbon.state-stable {
+      --ribbon-color: #4dc65b;
+      --ribbon-bg: rgba(77,198,91,.16);
+    }
+
+    .block-status-ribbon.state-soon {
+      --ribbon-color: #ff9f34;
+      --ribbon-bg: rgba(255,159,52,.18);
+    }
+
+    .block-status-ribbon.state-needed {
+      --ribbon-color: #ff4e4e;
+      --ribbon-bg: rgba(255,78,78,.18);
+    }
+
+    .memory-title {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 820;
+      letter-spacing: 0;
+    }
+
+    .memory-subtitle {
+      display: block;
+      margin-top: 7px;
+      color: #a8a8ad;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .memory-reps {
+      align-self: start;
+      color: var(--state-color, #47c756);
+      font-size: 1.55rem;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .memory-reps span {
+      display: block;
+      margin-top: 4px;
+      color: #a8a8ad;
+      font-size: .95rem;
+      font-weight: 550;
+    }
+
+    .thin-progress {
+      grid-column: 1 / -1;
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #454545;
+    }
+
+    .thin-progress span {
+      display: block;
+      width: var(--w, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background: var(--state-color, #4dc65b);
+    }
+
+    .tabbar {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      width: min(100vw, 480px);
+      transform: translateX(-50%);
+      min-height: 78px;
+      padding: 9px 10px 14px;
+      border-top: 1px solid #252525;
+      background: #070707;
+    }
+
+    .tab-button {
+      display: grid;
+      place-items: center;
+      gap: 3px;
+      color: #9d9da2;
+      background: transparent;
+      font-size: .78rem;
+      font-weight: 650;
+    }
+
+    .tab-button.active {
+      color: #45c855;
+    }
+
+    .tab-icon {
+      font-size: 1.65rem;
+      line-height: 1;
+    }
+
+    .detail-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      min-height: 112px;
+      padding: 26px 20px 20px;
+      background: #060606;
+    }
+
+    .back-pill,
+    .trash-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 74px;
+      height: 50px;
+      padding: 0 14px;
+      color: #f2f2f2;
+      border: 1px solid #9b9ba0;
+      border-radius: 26px;
+      background: transparent;
+      font-size: 1.05rem;
+      font-weight: 740;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .trash-pill {
+      min-width: 50px;
+      color: #ff4e4e;
+      text-decoration: none;
+      font-size: 1.35rem;
+    }
+
+    .detail-title {
+      text-align: center;
+      font-size: 1.22rem;
+      font-weight: 800;
+    }
+
+    .rep-panel {
+      padding: 30px 22px 10px;
+      text-align: center;
+    }
+
+    .muted-label {
+      color: #a2a2a8;
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+
+    .rep-number {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 12px;
+      margin: 22px 0 34px;
+    }
+
+    .rep-number strong {
+      color: #4dc65b;
+      font-size: 5.8rem;
+      line-height: .9;
+      font-weight: 900;
+    }
+
+    .rep-number span {
+      color: #aaaab2;
+      font-size: 2.2rem;
+      font-weight: 760;
+    }
+
+    .rep-edit {
+      padding: 0;
+      color: #aaaab2;
+      background: transparent;
+      font-size: 1.55rem;
+      line-height: 1;
+      vertical-align: baseline;
+    }
+
+    .rep-line {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #474747;
+    }
+
+    .rep-line span {
+      display: block;
+      height: 100%;
+      width: var(--w, 0%);
+      background: #4dc65b;
+    }
+
+    .rep-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 230px;
+      margin: 38px auto 0;
+    }
+
+    .rep-small {
+      min-height: 64px;
+      color: #f3f3f3;
+      border-radius: 13px;
+      background: #2d2d2d;
+      font-size: 1.35rem;
+      font-weight: 820;
+    }
+
+    .rep-small.minus {
+      color: #aaaab2;
+      background: #963333;
+    }
+
+    .rep-small.plus {
+      color: white;
+      background: #4db958;
+    }
+
+    .strength-stars {
+      margin: 36px 0 28px;
+      color: #242424;
+      font-size: 2.1rem;
+      letter-spacing: .12em;
+    }
+
+    .strength-stars .lit {
+      color: #4dc65b;
+      text-shadow: 0 0 18px rgba(77,198,91,.35);
+    }
+
+    .memorized-btn {
+      width: 100%;
+      min-height: 70px;
+      color: #b9b9bf;
+      border-radius: 18px;
+      background: #303030;
+      font-size: 1.15rem;
+      font-weight: 820;
+    }
+
+    .memorized-btn.ready {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .memorized-btn.active {
+      color: #f2f2f2;
+      border: 1px solid rgba(255,159,52,.28);
+      background: #2f2f2f;
+    }
+
+    .block-memory-toggle {
+      margin-top: 18px;
+      margin-bottom: 0;
+    }
+
+    .review-card {
+      margin-top: 26px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #242424;
+      text-align: left;
+    }
+
+    .review-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .review-meta div {
+      min-height: 58px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #303030;
+    }
+
+    .review-meta span {
+      display: block;
+      color: #9e9ea4;
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .review-meta strong {
+      display: block;
+      margin-top: 5px;
+      color: #f2f2f2;
+      font-size: .95rem;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .review-button {
+      min-height: 48px;
+      color: #f5f5f5;
+      border-radius: 13px;
+      background: #303030;
+      font-size: .9rem;
+      font-weight: 820;
+    }
+
+    .review-button.perfect {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .review-button.minor {
+      color: #d8eef0;
+      background: #2b3a3c;
+    }
+
+    .review-button.cue {
+      color: #f0d8bc;
+      background: #403427;
+    }
+
+    .review-button.failed {
+      color: #f0caca;
+      background: #402a2a;
+    }
+
+    .ayah-repair {
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .ayah-repair-list,
+    .recall-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .ayah-repair-row,
+    .recall-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 68px;
+      padding: 12px;
+      color: #f1f1f2;
+      border: 1px solid #343434;
+      border-left: 5px solid var(--state-color, #777);
+      border-radius: 14px;
+      background: #252525;
+      text-align: left;
+    }
+
+    .ayah-repair-row.state-new,
+    .recall-row.state-new {
+      --state-color: #777;
+    }
+
+    .ayah-repair-row.state-stable,
+    .recall-row.state-stable {
+      --state-color: #4dc65b;
+    }
+
+    .ayah-repair-row.state-soon,
+    .recall-row.state-soon {
+      --state-color: #ff9f34;
+    }
+
+    .ayah-repair-row.state-needed,
+    .recall-row.state-needed {
+      --state-color: #ff4e4e;
+    }
+
+    .ayah-num,
+    .recall-kind {
+      display: grid;
+      place-items: center;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      color: var(--state-color, #777);
+      font-weight: 900;
+    }
+
+    .ayah-repair-main strong,
+    .recall-main strong {
+      display: block;
+      color: #f3f3f3;
+      font-size: .98rem;
+      line-height: 1.25;
+    }
+
+    .ayah-repair-main span,
+    .recall-main span {
+      display: block;
+      margin-top: 4px;
+      color: #a8a8ad;
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+
+    .ayah-arabic {
+      direction: rtl;
+      text-align: right;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .ayah-card-actions {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 2px;
+    }
+
+    .ayah-practice-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 58px 1fr 58px;
+      gap: 9px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .ayah-rep-button,
+    .ayah-rep-count,
+    .ayah-memory-action,
+    .ayah-recall,
+    .ayah-toggle {
+      display: grid;
+      place-items: center;
+      min-height: 42px;
+      border-radius: 12px;
+      background: #303030;
+      color: #f2f2f2;
+      font-size: .86rem;
+      font-weight: 850;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .ayah-rep-count {
+      color: #a8a8ad;
+      cursor: default;
+    }
+
+    .ayah-rep-button,
+    .ayah-memory-action,
+    .ayah-recall {
+      border: 0;
+    }
+
+    .ayah-rep-button.minus {
+      color: #d2d2d8;
+      background: #743333;
+    }
+
+    .ayah-rep-button.plus,
+    .ayah-memory-action.ready {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .ayah-memory-action.active {
+      color: #f2f2f2;
+      border: 1px solid rgba(255,159,52,.28);
+      background: #2f2f2f;
+    }
+
+    .ayah-memory-action {
+      grid-column: 1 / -1;
+    }
+
+    .ayah-toggle.open {
+      color: #071207;
+      background: #d8f5d8;
+    }
+
+    .ayah-toggle.wide {
+      grid-column: 1 / -1;
+    }
+
+    .ayah-card-actions .ayah-arabic {
+      grid-column: 1 / -1;
+      padding: 12px;
+      border-radius: 12px;
+      background: #1d1d1d;
+      color: #f5f0e6;
+    }
+
+    .recall-section {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .recall-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+      color: #f1f1f2;
+      font-size: 1.2rem;
+      font-weight: 850;
+    }
+
+    .recall-heading span {
+      color: #9e9ea4;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .recall-subhead {
+      margin: 8px 0 0;
+      color: #9e9ea4;
+      font-size: .82rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .recall-empty {
+      padding: 14px;
+      border-radius: 14px;
+      background: #242424;
+      color: #9e9ea4;
+      font-size: .9rem;
+    }
+
+    .score-pair {
+      display: grid;
+      gap: 2px;
+      color: var(--state-color, #4dc65b);
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .score-pair span {
+      color: #a8a8ad;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 520px) {
+      .modal {
+        padding: 10px;
+      }
+
+      .challenge {
+        width: 100%;
+        max-height: calc(100dvh - 20px);
+      }
+
+      .challenge-header {
+        padding: 14px;
+      }
+
+      .challenge-header h2 {
+        font-size: 1.35rem;
+      }
+
+      .challenge-body {
+        gap: 11px;
+        padding: 14px;
+      }
+
+      .cue-box {
+        min-height: 86px;
+        padding: 14px;
+      }
+
+      .cue-main {
+        font-size: 1.75rem;
+      }
+
+      .cue-arabic {
+        font-size: 1.8rem;
+      }
+
+      .challenge .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .result-action {
+        min-height: 52px;
+        font-size: .82rem;
+      }
+
+      .ayah-repair-row,
+      .recall-row {
+        grid-template-columns: auto 1fr;
+      }
+
+      .score-pair {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
+    }
+
+    .motto {
+      margin-top: 34vh;
+      color: #aaaab0;
+      font-size: 1.12rem;
+    }
+
+    .quran-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .quran-ayah {
+      padding: 17px 16px;
+      border-radius: 16px;
+      background: #252525;
+      color: #f5f0e6;
+      direction: rtl;
+      text-align: right;
+      font-family: "Amiri", "Scheherazade New", Georgia, serif;
+      font-size: 1.28rem;
+      line-height: 1.85;
+    }
+
+    .quran-ayah span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 30px;
+      height: 30px;
+      margin-left: 8px;
+      color: #45c855;
+      border-radius: 999px;
+      background: rgba(69,200,85,.13);
+      direction: ltr;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: .78rem;
+      font-weight: 850;
+    }
+
+    .progress-hero {
+      padding: 22px;
+      border-radius: 20px;
+      background: #252525;
+    }
+
+    .progress-big {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      color: #4dc65b;
+      font-size: 4.4rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .progress-big span {
+      color: #a8a8ad;
+      font-size: 1.2rem;
+      font-weight: 650;
+    }
+
+    .progress-trackers {
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+
+    .progress-trackers > div:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
+    .decay-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .decay-card {
+      padding: 16px;
+      border-radius: 16px;
+      background: #252525;
+    }
+
+    .decay-card strong {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #f0f0f1;
+      font-size: 1rem;
+    }
+
+    .decay-card p {
+      margin: 8px 0 0;
+      color: #a8a8ad;
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+
+    .status-good { color: #4dc65b; }
+    .status-warn { color: #ffb14b; }
+    .status-bad { color: #ff5858; }
+  </style>
+</head>
+<body>
+  <div id="app" class="app-shell"></div>
+  <div id="challengeModal" class="modal" aria-hidden="true"></div>
+
+  <script>
+    // CONFIG
+    const CONFIG = {
+      sectionUnlockThreshold: 60,
+      deepRetentionDays: 90
+    };
+
+    const STORAGE_KEY = "surahAlHajjMemorizationCampaign_v1";
+    const DAY = 24 * 60 * 60 * 1000;
+
+    const RETENTION_STAGES = [
+      { name: "First Lock", minDelayMs: 0, retention: 15, nextDelayMs: 30 * 60 * 1000, graceMs: 60 * 60 * 1000 },
+      { name: "Same-Day Hold", minDelayMs: 30 * 60 * 1000, retention: 25, nextDelayMs: DAY, graceMs: 12 * 60 * 60 * 1000 },
+      { name: "1-Day Hold", minDelayMs: DAY, retention: 40, nextDelayMs: 3 * DAY, graceMs: DAY },
+      { name: "3-Day Hold", minDelayMs: 3 * DAY, retention: 55, nextDelayMs: 7 * DAY, graceMs: 2 * DAY },
+      { name: "7-Day Hold", minDelayMs: 7 * DAY, retention: 70, nextDelayMs: 14 * DAY, graceMs: 3 * DAY },
+      { name: "14-Day Hold", minDelayMs: 14 * DAY, retention: 80, nextDelayMs: 30 * DAY, graceMs: 7 * DAY },
+      { name: "30-Day Hold", minDelayMs: 30 * DAY, retention: 90, nextDelayMs: CONFIG.deepRetentionDays * DAY, graceMs: 14 * DAY },
+      { name: "Deep Retention", minDelayMs: CONFIG.deepRetentionDays * DAY, retention: 100, nextDelayMs: null, graceMs: null }
+    ];
+
+    const SECTIONS = [
+      { id: 1, name: "The Tremor", ayahRange: [1, 13], motif: "ZT" },
+      { id: 2, name: "The Division", ayahRange: [14, 24], motif: "DV" },
+      { id: 3, name: "The House", ayahRange: [25, 37], motif: "HS" },
+      { id: 4, name: "The Defense", ayahRange: [38, 48], motif: "DF" },
+      { id: 5, name: "The Test", ayahRange: [49, 66], motif: "TS" },
+      { id: 6, name: "The Surrender", ayahRange: [67, 78], motif: "SR" }
+    ];
+
+    const BLOCKS = [
+      { id: "1-7", sectionId: 1, ayahRange: [1, 7] },
+      { id: "8-13", sectionId: 1, ayahRange: [8, 13] },
+      { id: "14-18", sectionId: 2, ayahRange: [14, 18] },
+      { id: "19-24", sectionId: 2, ayahRange: [19, 24] },
+      { id: "25-29", sectionId: 3, ayahRange: [25, 29] },
+      { id: "30-37", sectionId: 3, ayahRange: [30, 37] },
+      { id: "38-41", sectionId: 4, ayahRange: [38, 41] },
+      { id: "42-48", sectionId: 4, ayahRange: [42, 48] },
+      { id: "49-57", sectionId: 5, ayahRange: [49, 57] },
+      { id: "58-66", sectionId: 5, ayahRange: [58, 66] },
+      { id: "67-72", sectionId: 6, ayahRange: [67, 72] },
+      { id: "73-78", sectionId: 6, ayahRange: [73, 78] }
+    ];
+
+    const SURAH_AYAT = [
+      {"ayah":1,"text":"يَـٰٓأَيُّهَا ٱلنَّاسُ ٱتَّقُواْ رَبَّكُمۡۚ إِنَّ زَلۡزَلَةَ ٱلسَّاعَةِ شَيۡءٌ عَظِيمٞ"},
+      {"ayah":2,"text":"يَوۡمَ تَرَوۡنَهَا تَذۡهَلُ كُلُّ مُرۡضِعَةٍ عَمَّآ أَرۡضَعَتۡ وَتَضَعُ كُلُّ ذَاتِ حَمۡلٍ حَمۡلَهَا وَتَرَى ٱلنَّاسَ سُكَٰرَىٰ وَمَا هُم بِسُكَٰرَىٰ وَلَٰكِنَّ عَذَابَ ٱللَّهِ شَدِيدٞ"},
+      {"ayah":3,"text":"وَمِنَ ٱلنَّاسِ مَن يُجَٰدِلُ فِي ٱللَّهِ بِغَيۡرِ عِلۡمٖ وَيَتَّبِعُ كُلَّ شَيۡطَٰنٖ مَّرِيدٖ"},
+      {"ayah":4,"text":"كُتِبَ عَلَيۡهِ أَنَّهُۥ مَن تَوَلَّاهُ فَأَنَّهُۥ يُضِلُّهُۥ وَيَهۡدِيهِ إِلَىٰ عَذَابِ ٱلسَّعِيرِ"},
+      {"ayah":5,"text":"يَـٰٓأَيُّهَا ٱلنَّاسُ إِن كُنتُمۡ فِي رَيۡبٖ مِّنَ ٱلۡبَعۡثِ فَإِنَّا خَلَقۡنَٰكُم مِّن تُرَابٖ ثُمَّ مِن نُّطۡفَةٖ ثُمَّ مِنۡ عَلَقَةٖ ثُمَّ مِن مُّضۡغَةٖ مُّخَلَّقَةٖ وَغَيۡرِ مُخَلَّقَةٖ لِّنُبَيِّنَ لَكُمۡۚ وَنُقِرُّ فِي ٱلۡأَرۡحَامِ مَا نَشَآءُ إِلَىٰٓ أَجَلٖ مُّسَمّٗى ثُمَّ نُخۡرِجُكُمۡ طِفۡلٗا ثُمَّ لِتَبۡلُغُوٓاْ أَشُدَّكُمۡۖ وَمِنكُم مَّن يُتَوَفَّىٰ وَمِنكُم مَّن يُرَدُّ إِلَىٰٓ أَرۡذَلِ ٱلۡعُمُرِ لِكَيۡلَا يَعۡلَمَ مِنۢ بَعۡدِ عِلۡمٖ شَيۡـٔٗاۚ وَتَرَى ٱلۡأَرۡضَ هَامِدَةٗ فَإِذَآ أَنزَلۡنَا عَلَيۡهَا ٱلۡمَآءَ ٱهۡتَزَّتۡ وَرَبَتۡ وَأَنۢبَتَتۡ مِن كُلِّ زَوۡجِۭ بَهِيجٖ"},
+      {"ayah":6,"text":"ذَٰلِكَ بِأَنَّ ٱللَّهَ هُوَ ٱلۡحَقُّ وَأَنَّهُۥ يُحۡيِ ٱلۡمَوۡتَىٰ وَأَنَّهُۥ عَلَىٰ كُلِّ شَيۡءٖ قَدِيرٞ"},
+      {"ayah":7,"text":"وَأَنَّ ٱلسَّاعَةَ ءَاتِيَةٞ لَّا رَيۡبَ فِيهَا وَأَنَّ ٱللَّهَ يَبۡعَثُ مَن فِي ٱلۡقُبُورِ"},
+      {"ayah":8,"text":"وَمِنَ ٱلنَّاسِ مَن يُجَٰدِلُ فِي ٱللَّهِ بِغَيۡرِ عِلۡمٖ وَلَا هُدٗى وَلَا كِتَٰبٖ مُّنِيرٖ"},
+      {"ayah":9,"text":"ثَانِيَ عِطۡفِهِۦ لِيُضِلَّ عَن سَبِيلِ ٱللَّهِۖ لَهُۥ فِي ٱلدُّنۡيَا خِزۡيٞۖ وَنُذِيقُهُۥ يَوۡمَ ٱلۡقِيَٰمَةِ عَذَابَ ٱلۡحَرِيقِ"},
+      {"ayah":10,"text":"ذَٰلِكَ بِمَا قَدَّمَتۡ يَدَاكَ وَأَنَّ ٱللَّهَ لَيۡسَ بِظَلَّـٰمٖ لِّلۡعَبِيدِ"},
+      {"ayah":11,"text":"وَمِنَ ٱلنَّاسِ مَن يَعۡبُدُ ٱللَّهَ عَلَىٰ حَرۡفٖۖ فَإِنۡ أَصَابَهُۥ خَيۡرٌ ٱطۡمَأَنَّ بِهِۦۖ وَإِنۡ أَصَابَتۡهُ فِتۡنَةٌ ٱنقَلَبَ عَلَىٰ وَجۡهِهِۦ خَسِرَ ٱلدُّنۡيَا وَٱلۡأٓخِرَةَۚ ذَٰلِكَ هُوَ ٱلۡخُسۡرَانُ ٱلۡمُبِينُ"},
+      {"ayah":12,"text":"يَدۡعُواْ مِن دُونِ ٱللَّهِ مَا لَا يَضُرُّهُۥ وَمَا لَا يَنفَعُهُۥۚ ذَٰلِكَ هُوَ ٱلضَّلَٰلُ ٱلۡبَعِيدُ"},
+      {"ayah":13,"text":"يَدۡعُواْ لَمَن ضَرُّهُۥٓ أَقۡرَبُ مِن نَّفۡعِهِۦۚ لَبِئۡسَ ٱلۡمَوۡلَىٰ وَلَبِئۡسَ ٱلۡعَشِيرُ"},
+      {"ayah":14,"text":"إِنَّ ٱللَّهَ يُدۡخِلُ ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ جَنَّـٰتٖ تَجۡرِي مِن تَحۡتِهَا ٱلۡأَنۡهَٰرُۚ إِنَّ ٱللَّهَ يَفۡعَلُ مَا يُرِيدُ"},
+      {"ayah":15,"text":"مَن كَانَ يَظُنُّ أَن لَّن يَنصُرَهُ ٱللَّهُ فِي ٱلدُّنۡيَا وَٱلۡأٓخِرَةِ فَلۡيَمۡدُدۡ بِسَبَبٍ إِلَى ٱلسَّمَآءِ ثُمَّ لۡيَقۡطَعۡ فَلۡيَنظُرۡ هَلۡ يُذۡهِبَنَّ كَيۡدُهُۥ مَا يَغِيظُ"},
+      {"ayah":16,"text":"وَكَذَٰلِكَ أَنزَلۡنَٰهُ ءَايَٰتِۭ بَيِّنَٰتٖ وَأَنَّ ٱللَّهَ يَهۡدِي مَن يُرِيدُ"},
+      {"ayah":17,"text":"إِنَّ ٱلَّذِينَ ءَامَنُواْ وَٱلَّذِينَ هَادُواْ وَٱلصَّـٰبِـِٔينَ وَٱلنَّصَٰرَىٰ وَٱلۡمَجُوسَ وَٱلَّذِينَ أَشۡرَكُوٓاْ إِنَّ ٱللَّهَ يَفۡصِلُ بَيۡنَهُمۡ يَوۡمَ ٱلۡقِيَٰمَةِۚ إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَيۡءٖ شَهِيدٌ"},
+      {"ayah":18,"text":"أَلَمۡ تَرَ أَنَّ ٱللَّهَ يَسۡجُدُۤ لَهُۥۤ مَن فِي ٱلسَّمَٰوَٰتِ وَمَن فِي ٱلۡأَرۡضِ وَٱلشَّمۡسُ وَٱلۡقَمَرُ وَٱلنُّجُومُ وَٱلۡجِبَالُ وَٱلشَّجَرُ وَٱلدَّوَآبُّ وَكَثِيرٞ مِّنَ ٱلنَّاسِۖ وَكَثِيرٌ حَقَّ عَلَيۡهِ ٱلۡعَذَابُۗ وَمَن يُهِنِ ٱللَّهُ فَمَا لَهُۥ مِن مُّكۡرِمٍۚ إِنَّ ٱللَّهَ يَفۡعَلُ مَا يَشَآءُ۩"},
+      {"ayah":19,"text":"۞هَٰذَانِ خَصۡمَانِ ٱخۡتَصَمُواْ فِي رَبِّهِمۡۖ فَٱلَّذِينَ كَفَرُواْ قُطِّعَتۡ لَهُمۡ ثِيَابٞ مِّن نَّارٖ يُصَبُّ مِن فَوۡقِ رُءُوسِهِمُ ٱلۡحَمِيمُ"},
+      {"ayah":20,"text":"يُصۡهَرُ بِهِۦ مَا فِي بُطُونِهِمۡ وَٱلۡجُلُودُ"},
+      {"ayah":21,"text":"وَلَهُم مَّقَٰمِعُ مِنۡ حَدِيدٖ"},
+      {"ayah":22,"text":"كُلَّمَآ أَرَادُوٓاْ أَن يَخۡرُجُواْ مِنۡهَا مِنۡ غَمٍّ أُعِيدُواْ فِيهَا وَذُوقُواْ عَذَابَ ٱلۡحَرِيقِ"},
+      {"ayah":23,"text":"إِنَّ ٱللَّهَ يُدۡخِلُ ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ جَنَّـٰتٖ تَجۡرِي مِن تَحۡتِهَا ٱلۡأَنۡهَٰرُ يُحَلَّوۡنَ فِيهَا مِنۡ أَسَاوِرَ مِن ذَهَبٖ وَلُؤۡلُؤٗاۖ وَلِبَاسُهُمۡ فِيهَا حَرِيرٞ"},
+      {"ayah":24,"text":"وَهُدُوٓاْ إِلَى ٱلطَّيِّبِ مِنَ ٱلۡقَوۡلِ وَهُدُوٓاْ إِلَىٰ صِرَٰطِ ٱلۡحَمِيدِ"},
+      {"ayah":25,"text":"إِنَّ ٱلَّذِينَ كَفَرُواْ وَيَصُدُّونَ عَن سَبِيلِ ٱللَّهِ وَٱلۡمَسۡجِدِ ٱلۡحَرَامِ ٱلَّذِي جَعَلۡنَٰهُ لِلنَّاسِ سَوَآءً ٱلۡعَٰكِفُ فِيهِ وَٱلۡبَادِۚ وَمَن يُرِدۡ فِيهِ بِإِلۡحَادِۭ بِظُلۡمٖ نُّذِقۡهُ مِنۡ عَذَابٍ أَلِيمٖ"},
+      {"ayah":26,"text":"وَإِذۡ بَوَّأۡنَا لِإِبۡرَٰهِيمَ مَكَانَ ٱلۡبَيۡتِ أَن لَّا تُشۡرِكۡ بِي شَيۡـٔٗا وَطَهِّرۡ بَيۡتِيَ لِلطَّآئِفِينَ وَٱلۡقَآئِمِينَ وَٱلرُّكَّعِ ٱلسُّجُودِ"},
+      {"ayah":27,"text":"وَأَذِّن فِي ٱلنَّاسِ بِٱلۡحَجِّ يَأۡتُوكَ رِجَالٗا وَعَلَىٰ كُلِّ ضَامِرٖ يَأۡتِينَ مِن كُلِّ فَجٍّ عَمِيقٖ"},
+      {"ayah":28,"text":"لِّيَشۡهَدُواْ مَنَٰفِعَ لَهُمۡ وَيَذۡكُرُواْ ٱسۡمَ ٱللَّهِ فِيٓ أَيَّامٖ مَّعۡلُومَٰتٍ عَلَىٰ مَا رَزَقَهُم مِّنۢ بَهِيمَةِ ٱلۡأَنۡعَٰمِۖ فَكُلُواْ مِنۡهَا وَأَطۡعِمُواْ ٱلۡبَآئِسَ ٱلۡفَقِيرَ"},
+      {"ayah":29,"text":"ثُمَّ لۡيَقۡضُواْ تَفَثَهُمۡ وَلۡيُوفُواْ نُذُورَهُمۡ وَلۡيَطَّوَّفُواْ بِٱلۡبَيۡتِ ٱلۡعَتِيقِ"},
+      {"ayah":30,"text":"ذَٰلِكَۖ وَمَن يُعَظِّمۡ حُرُمَٰتِ ٱللَّهِ فَهُوَ خَيۡرٞ لَّهُۥ عِندَ رَبِّهِۦۗ وَأُحِلَّتۡ لَكُمُ ٱلۡأَنۡعَٰمُ إِلَّا مَا يُتۡلَىٰ عَلَيۡكُمۡۖ فَٱجۡتَنِبُواْ ٱلرِّجۡسَ مِنَ ٱلۡأَوۡثَٰنِ وَٱجۡتَنِبُواْ قَوۡلَ ٱلزُّورِ"},
+      {"ayah":31,"text":"حُنَفَآءَ لِلَّهِ غَيۡرَ مُشۡرِكِينَ بِهِۦۚ وَمَن يُشۡرِكۡ بِٱللَّهِ فَكَأَنَّمَا خَرَّ مِنَ ٱلسَّمَآءِ فَتَخۡطَفُهُ ٱلطَّيۡرُ أَوۡ تَهۡوِي بِهِ ٱلرِّيحُ فِي مَكَانٖ سَحِيقٖ"},
+      {"ayah":32,"text":"ذَٰلِكَۖ وَمَن يُعَظِّمۡ شَعَـٰٓئِرَ ٱللَّهِ فَإِنَّهَا مِن تَقۡوَى ٱلۡقُلُوبِ"},
+      {"ayah":33,"text":"لَكُمۡ فِيهَا مَنَٰفِعُ إِلَىٰٓ أَجَلٖ مُّسَمّٗى ثُمَّ مَحِلُّهَآ إِلَى ٱلۡبَيۡتِ ٱلۡعَتِيقِ"},
+      {"ayah":34,"text":"وَلِكُلِّ أُمَّةٖ جَعَلۡنَا مَنسَكٗا لِّيَذۡكُرُواْ ٱسۡمَ ٱللَّهِ عَلَىٰ مَا رَزَقَهُم مِّنۢ بَهِيمَةِ ٱلۡأَنۡعَٰمِۗ فَإِلَٰهُكُمۡ إِلَٰهٞ وَٰحِدٞ فَلَهُۥٓ أَسۡلِمُواْۗ وَبَشِّرِ ٱلۡمُخۡبِتِينَ"},
+      {"ayah":35,"text":"ٱلَّذِينَ إِذَا ذُكِرَ ٱللَّهُ وَجِلَتۡ قُلُوبُهُمۡ وَٱلصَّـٰبِرِينَ عَلَىٰ مَآ أَصَابَهُمۡ وَٱلۡمُقِيمِي ٱلصَّلَوٰةِ وَمِمَّا رَزَقۡنَٰهُمۡ يُنفِقُونَ"},
+      {"ayah":36,"text":"وَٱلۡبُدۡنَ جَعَلۡنَٰهَا لَكُم مِّن شَعَـٰٓئِرِ ٱللَّهِ لَكُمۡ فِيهَا خَيۡرٞۖ فَٱذۡكُرُواْ ٱسۡمَ ٱللَّهِ عَلَيۡهَا صَوَآفَّۖ فَإِذَا وَجَبَتۡ جُنُوبُهَا فَكُلُواْ مِنۡهَا وَأَطۡعِمُواْ ٱلۡقَانِعَ وَٱلۡمُعۡتَرَّۚ كَذَٰلِكَ سَخَّرۡنَٰهَا لَكُمۡ لَعَلَّكُمۡ تَشۡكُرُونَ"},
+      {"ayah":37,"text":"لَن يَنَالَ ٱللَّهَ لُحُومُهَا وَلَا دِمَآؤُهَا وَلَٰكِن يَنَالُهُ ٱلتَّقۡوَىٰ مِنكُمۡۚ كَذَٰلِكَ سَخَّرَهَا لَكُمۡ لِتُكَبِّرُواْ ٱللَّهَ عَلَىٰ مَا هَدَىٰكُمۡۗ وَبَشِّرِ ٱلۡمُحۡسِنِينَ"},
+      {"ayah":38,"text":"۞إِنَّ ٱللَّهَ يُدَٰفِعُ عَنِ ٱلَّذِينَ ءَامَنُوٓاْۗ إِنَّ ٱللَّهَ لَا يُحِبُّ كُلَّ خَوَّانٖ كَفُورٍ"},
+      {"ayah":39,"text":"أُذِنَ لِلَّذِينَ يُقَٰتَلُونَ بِأَنَّهُمۡ ظُلِمُواْۚ وَإِنَّ ٱللَّهَ عَلَىٰ نَصۡرِهِمۡ لَقَدِيرٌ"},
+      {"ayah":40,"text":"ٱلَّذِينَ أُخۡرِجُواْ مِن دِيَٰرِهِم بِغَيۡرِ حَقٍّ إِلَّآ أَن يَقُولُواْ رَبُّنَا ٱللَّهُۗ وَلَوۡلَا دَفۡعُ ٱللَّهِ ٱلنَّاسَ بَعۡضَهُم بِبَعۡضٖ لَّهُدِّمَتۡ صَوَٰمِعُ وَبِيَعٞ وَصَلَوَٰتٞ وَمَسَٰجِدُ يُذۡكَرُ فِيهَا ٱسۡمُ ٱللَّهِ كَثِيرٗاۗ وَلَيَنصُرَنَّ ٱللَّهُ مَن يَنصُرُهُۥٓۚ إِنَّ ٱللَّهَ لَقَوِيٌّ عَزِيزٌ"},
+      {"ayah":41,"text":"ٱلَّذِينَ إِن مَّكَّنَّـٰهُمۡ فِي ٱلۡأَرۡضِ أَقَامُواْ ٱلصَّلَوٰةَ وَءَاتَوُاْ ٱلزَّكَوٰةَ وَأَمَرُواْ بِٱلۡمَعۡرُوفِ وَنَهَوۡاْ عَنِ ٱلۡمُنكَرِۗ وَلِلَّهِ عَٰقِبَةُ ٱلۡأُمُورِ"},
+      {"ayah":42,"text":"وَإِن يُكَذِّبُوكَ فَقَدۡ كَذَّبَتۡ قَبۡلَهُمۡ قَوۡمُ نُوحٖ وَعَادٞ وَثَمُودُ"},
+      {"ayah":43,"text":"وَقَوۡمُ إِبۡرَٰهِيمَ وَقَوۡمُ لُوطٖ"},
+      {"ayah":44,"text":"وَأَصۡحَٰبُ مَدۡيَنَۖ وَكُذِّبَ مُوسَىٰۖ فَأَمۡلَيۡتُ لِلۡكَٰفِرِينَ ثُمَّ أَخَذۡتُهُمۡۖ فَكَيۡفَ كَانَ نَكِيرِ"},
+      {"ayah":45,"text":"فَكَأَيِّن مِّن قَرۡيَةٍ أَهۡلَكۡنَٰهَا وَهِيَ ظَالِمَةٞ فَهِيَ خَاوِيَةٌ عَلَىٰ عُرُوشِهَا وَبِئۡرٖ مُّعَطَّلَةٖ وَقَصۡرٖ مَّشِيدٍ"},
+      {"ayah":46,"text":"أَفَلَمۡ يَسِيرُواْ فِي ٱلۡأَرۡضِ فَتَكُونَ لَهُمۡ قُلُوبٞ يَعۡقِلُونَ بِهَآ أَوۡ ءَاذَانٞ يَسۡمَعُونَ بِهَاۖ فَإِنَّهَا لَا تَعۡمَى ٱلۡأَبۡصَٰرُ وَلَٰكِن تَعۡمَى ٱلۡقُلُوبُ ٱلَّتِي فِي ٱلصُّدُورِ"},
+      {"ayah":47,"text":"وَيَسۡتَعۡجِلُونَكَ بِٱلۡعَذَابِ وَلَن يُخۡلِفَ ٱللَّهُ وَعۡدَهُۥۚ وَإِنَّ يَوۡمًا عِندَ رَبِّكَ كَأَلۡفِ سَنَةٖ مِّمَّا تَعُدُّونَ"},
+      {"ayah":48,"text":"وَكَأَيِّن مِّن قَرۡيَةٍ أَمۡلَيۡتُ لَهَا وَهِيَ ظَالِمَةٞ ثُمَّ أَخَذۡتُهَا وَإِلَيَّ ٱلۡمَصِيرُ"},
+      {"ayah":49,"text":"قُلۡ يَـٰٓأَيُّهَا ٱلنَّاسُ إِنَّمَآ أَنَا۠ لَكُمۡ نَذِيرٞ مُّبِينٞ"},
+      {"ayah":50,"text":"فَٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ لَهُم مَّغۡفِرَةٞ وَرِزۡقٞ كَرِيمٞ"},
+      {"ayah":51,"text":"وَٱلَّذِينَ سَعَوۡاْ فِيٓ ءَايَٰتِنَا مُعَٰجِزِينَ أُوْلَـٰٓئِكَ أَصۡحَٰبُ ٱلۡجَحِيمِ"},
+      {"ayah":52,"text":"وَمَآ أَرۡسَلۡنَا مِن قَبۡلِكَ مِن رَّسُولٖ وَلَا نَبِيٍّ إِلَّآ إِذَا تَمَنَّىٰٓ أَلۡقَى ٱلشَّيۡطَٰنُ فِيٓ أُمۡنِيَّتِهِۦ فَيَنسَخُ ٱللَّهُ مَا يُلۡقِي ٱلشَّيۡطَٰنُ ثُمَّ يُحۡكِمُ ٱللَّهُ ءَايَٰتِهِۦۗ وَٱللَّهُ عَلِيمٌ حَكِيمٞ"},
+      {"ayah":53,"text":"لِّيَجۡعَلَ مَا يُلۡقِي ٱلشَّيۡطَٰنُ فِتۡنَةٗ لِّلَّذِينَ فِي قُلُوبِهِم مَّرَضٞ وَٱلۡقَاسِيَةِ قُلُوبُهُمۡۗ وَإِنَّ ٱلظَّـٰلِمِينَ لَفِي شِقَاقِۭ بَعِيدٖ"},
+      {"ayah":54,"text":"وَلِيَعۡلَمَ ٱلَّذِينَ أُوتُواْ ٱلۡعِلۡمَ أَنَّهُ ٱلۡحَقُّ مِن رَّبِّكَ فَيُؤۡمِنُواْ بِهِۦ فَتُخۡبِتَ لَهُۥ قُلُوبُهُمۡۗ وَإِنَّ ٱللَّهَ لَهَادِ ٱلَّذِينَ ءَامَنُوٓاْ إِلَىٰ صِرَٰطٖ مُّسۡتَقِيمٖ"},
+      {"ayah":55,"text":"وَلَا يَزَالُ ٱلَّذِينَ كَفَرُواْ فِي مِرۡيَةٖ مِّنۡهُ حَتَّىٰ تَأۡتِيَهُمُ ٱلسَّاعَةُ بَغۡتَةً أَوۡ يَأۡتِيَهُمۡ عَذَابُ يَوۡمٍ عَقِيمٍ"},
+      {"ayah":56,"text":"ٱلۡمُلۡكُ يَوۡمَئِذٖ لِّلَّهِ يَحۡكُمُ بَيۡنَهُمۡۚ فَٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ فِي جَنَّـٰتِ ٱلنَّعِيمِ"},
+      {"ayah":57,"text":"وَٱلَّذِينَ كَفَرُواْ وَكَذَّبُواْ بِـَٔايَٰتِنَا فَأُوْلَـٰٓئِكَ لَهُمۡ عَذَابٞ مُّهِينٞ"},
+      {"ayah":58,"text":"وَٱلَّذِينَ هَاجَرُواْ فِي سَبِيلِ ٱللَّهِ ثُمَّ قُتِلُوٓاْ أَوۡ مَاتُواْ لَيَرۡزُقَنَّهُمُ ٱللَّهُ رِزۡقًا حَسَنٗاۚ وَإِنَّ ٱللَّهَ لَهُوَ خَيۡرُ ٱلرَّـٰزِقِينَ"},
+      {"ayah":59,"text":"لَيُدۡخِلَنَّهُم مُّدۡخَلٗا يَرۡضَوۡنَهُۥۚ وَإِنَّ ٱللَّهَ لَعَلِيمٌ حَلِيمٞ"},
+      {"ayah":60,"text":"۞ذَٰلِكَۖ وَمَنۡ عَاقَبَ بِمِثۡلِ مَا عُوقِبَ بِهِۦ ثُمَّ بُغِيَ عَلَيۡهِ لَيَنصُرَنَّهُ ٱللَّهُۚ إِنَّ ٱللَّهَ لَعَفُوٌّ غَفُورٞ"},
+      {"ayah":61,"text":"ذَٰلِكَ بِأَنَّ ٱللَّهَ يُولِجُ ٱلَّيۡلَ فِي ٱلنَّهَارِ وَيُولِجُ ٱلنَّهَارَ فِي ٱلَّيۡلِ وَأَنَّ ٱللَّهَ سَمِيعُۢ بَصِيرٞ"},
+      {"ayah":62,"text":"ذَٰلِكَ بِأَنَّ ٱللَّهَ هُوَ ٱلۡحَقُّ وَأَنَّ مَا يَدۡعُونَ مِن دُونِهِۦ هُوَ ٱلۡبَٰطِلُ وَأَنَّ ٱللَّهَ هُوَ ٱلۡعَلِيُّ ٱلۡكَبِيرُ"},
+      {"ayah":63,"text":"أَلَمۡ تَرَ أَنَّ ٱللَّهَ أَنزَلَ مِنَ ٱلسَّمَآءِ مَآءٗ فَتُصۡبِحُ ٱلۡأَرۡضُ مُخۡضَرَّةًۚ إِنَّ ٱللَّهَ لَطِيفٌ خَبِيرٞ"},
+      {"ayah":64,"text":"لَّهُۥ مَا فِي ٱلسَّمَٰوَٰتِ وَمَا فِي ٱلۡأَرۡضِۚ وَإِنَّ ٱللَّهَ لَهُوَ ٱلۡغَنِيُّ ٱلۡحَمِيدُ"},
+      {"ayah":65,"text":"أَلَمۡ تَرَ أَنَّ ٱللَّهَ سَخَّرَ لَكُم مَّا فِي ٱلۡأَرۡضِ وَٱلۡفُلۡكَ تَجۡرِي فِي ٱلۡبَحۡرِ بِأَمۡرِهِۦ وَيُمۡسِكُ ٱلسَّمَآءَ أَن تَقَعَ عَلَى ٱلۡأَرۡضِ إِلَّا بِإِذۡنِهِۦٓۚ إِنَّ ٱللَّهَ بِٱلنَّاسِ لَرَءُوفٞ رَّحِيمٞ"},
+      {"ayah":66,"text":"وَهُوَ ٱلَّذِيٓ أَحۡيَاكُمۡ ثُمَّ يُمِيتُكُمۡ ثُمَّ يُحۡيِيكُمۡۗ إِنَّ ٱلۡإِنسَٰنَ لَكَفُورٞ"},
+      {"ayah":67,"text":"لِّكُلِّ أُمَّةٖ جَعَلۡنَا مَنسَكًا هُمۡ نَاسِكُوهُۖ فَلَا يُنَٰزِعُنَّكَ فِي ٱلۡأَمۡرِۚ وَٱدۡعُ إِلَىٰ رَبِّكَۖ إِنَّكَ لَعَلَىٰ هُدٗى مُّسۡتَقِيمٖ"},
+      {"ayah":68,"text":"وَإِن جَٰدَلُوكَ فَقُلِ ٱللَّهُ أَعۡلَمُ بِمَا تَعۡمَلُونَ"},
+      {"ayah":69,"text":"ٱللَّهُ يَحۡكُمُ بَيۡنَكُمۡ يَوۡمَ ٱلۡقِيَٰمَةِ فِيمَا كُنتُمۡ فِيهِ تَخۡتَلِفُونَ"},
+      {"ayah":70,"text":"أَلَمۡ تَعۡلَمۡ أَنَّ ٱللَّهَ يَعۡلَمُ مَا فِي ٱلسَّمَآءِ وَٱلۡأَرۡضِۚ إِنَّ ذَٰلِكَ فِي كِتَٰبٍۚ إِنَّ ذَٰلِكَ عَلَى ٱللَّهِ يَسِيرٞ"},
+      {"ayah":71,"text":"وَيَعۡبُدُونَ مِن دُونِ ٱللَّهِ مَا لَمۡ يُنَزِّلۡ بِهِۦ سُلۡطَٰنٗا وَمَا لَيۡسَ لَهُم بِهِۦ عِلۡمٞۗ وَمَا لِلظَّـٰلِمِينَ مِن نَّصِيرٖ"},
+      {"ayah":72,"text":"وَإِذَا تُتۡلَىٰ عَلَيۡهِمۡ ءَايَٰتُنَا بَيِّنَٰتٖ تَعۡرِفُ فِي وُجُوهِ ٱلَّذِينَ كَفَرُواْ ٱلۡمُنكَرَۖ يَكَادُونَ يَسۡطُونَ بِٱلَّذِينَ يَتۡلُونَ عَلَيۡهِمۡ ءَايَٰتِنَاۗ قُلۡ أَفَأُنَبِّئُكُم بِشَرّٖ مِّن ذَٰلِكُمُۚ ٱلنَّارُ وَعَدَهَا ٱللَّهُ ٱلَّذِينَ كَفَرُواْۖ وَبِئۡسَ ٱلۡمَصِيرُ"},
+      {"ayah":73,"text":"يَـٰٓأَيُّهَا ٱلنَّاسُ ضُرِبَ مَثَلٞ فَٱسۡتَمِعُواْ لَهُۥٓۚ إِنَّ ٱلَّذِينَ تَدۡعُونَ مِن دُونِ ٱللَّهِ لَن يَخۡلُقُواْ ذُبَابٗا وَلَوِ ٱجۡتَمَعُواْ لَهُۥۖ وَإِن يَسۡلُبۡهُمُ ٱلذُّبَابُ شَيۡـٔٗا لَّا يَسۡتَنقِذُوهُ مِنۡهُۚ ضَعُفَ ٱلطَّالِبُ وَٱلۡمَطۡلُوبُ"},
+      {"ayah":74,"text":"مَا قَدَرُواْ ٱللَّهَ حَقَّ قَدۡرِهِۦٓۚ إِنَّ ٱللَّهَ لَقَوِيٌّ عَزِيزٌ"},
+      {"ayah":75,"text":"ٱللَّهُ يَصۡطَفِي مِنَ ٱلۡمَلَـٰٓئِكَةِ رُسُلٗا وَمِنَ ٱلنَّاسِۚ إِنَّ ٱللَّهَ سَمِيعُۢ بَصِيرٞ"},
+      {"ayah":76,"text":"يَعۡلَمُ مَا بَيۡنَ أَيۡدِيهِمۡ وَمَا خَلۡفَهُمۡۚ وَإِلَى ٱللَّهِ تُرۡجَعُ ٱلۡأُمُورُ"},
+      {"ayah":77,"text":"يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ ٱرۡكَعُواْ وَٱسۡجُدُواْۤ وَٱعۡبُدُواْ رَبَّكُمۡ وَٱفۡعَلُواْ ٱلۡخَيۡرَ لَعَلَّكُمۡ تُفۡلِحُونَ۩"},
+      {"ayah":78,"text":"وَجَٰهِدُواْ فِي ٱللَّهِ حَقَّ جِهَادِهِۦۚ هُوَ ٱجۡتَبَىٰكُمۡ وَمَا جَعَلَ عَلَيۡكُمۡ فِي ٱلدِّينِ مِنۡ حَرَجٖۚ مِّلَّةَ أَبِيكُمۡ إِبۡرَٰهِيمَۚ هُوَ سَمَّىٰكُمُ ٱلۡمُسۡلِمِينَ مِن قَبۡلُ وَفِي هَٰذَا لِيَكُونَ ٱلرَّسُولُ شَهِيدًا عَلَيۡكُمۡ وَتَكُونُواْ شُهَدَآءَ عَلَى ٱلنَّاسِۚ فَأَقِيمُواْ ٱلصَّلَوٰةَ وَءَاتُواْ ٱلزَّكَوٰةَ وَٱعۡتَصِمُواْ بِٱللَّهِ هُوَ مَوۡلَىٰكُمۡۖ فَنِعۡمَ ٱلۡمَوۡلَىٰ وَنِعۡمَ ٱلنَّصِيرُ"}
+    ];
+
+    const AYAH_TEXT = Object.fromEntries(SURAH_AYAT.map(item => [item.ayah, item.text]));
+    const AYAH_FIRST_WORDS = Object.fromEntries(SURAH_AYAT.map(item => [item.ayah, item.text.split(/\s+/)[0]]));
+
+    // DATA MODEL
+    let state;
+    let ui = {
+      activeTab: "today",
+      currentBlockId: null,
+      selectedSectionId: 1,
+      selectedBlockId: "1-7",
+      selectedAyah: 1,
+      challengeTarget: null,
+      challengeCue: "number",
+      lastMessage: ""
+    };
+
+    function createInitialState() {
+      const now = new Date().toISOString();
+      const sections = {};
+      SECTIONS.forEach(section => {
+        sections[String(section.id)] = {
+          id: section.id,
+          name: section.name,
+          ayahRange: section.ayahRange,
+          unlocked: section.id === 1,
+          retention: 0
+        };
+      });
+
+      const ayat = {};
+      for (let ayah = 1; ayah <= 78; ayah += 1) {
+        const section = SECTIONS.find(item => ayah >= item.ayahRange[0] && ayah <= item.ayahRange[1]);
+        const block = BLOCKS.find(item => ayah >= item.ayahRange[0] && ayah <= item.ayahRange[1]);
+        ayat[String(ayah)] = {
+          ayahNumber: ayah,
+          sectionId: section.id,
+          blockId: block.id,
+          reps: 0,
+          retention: 0,
+          stageIndex: -1,
+          stageName: "Not started",
+          firstLockedAt: null,
+          lastSuccessfulRecallAt: null,
+          nextDueAt: null,
+          lastResult: null,
+          lastAttemptAt: null,
+          weak: false,
+          attempts: []
+        };
+      }
+
+      const blocks = {};
+      BLOCKS.forEach(block => {
+        blocks[block.id] = {
+          id: block.id,
+          sectionId: block.sectionId,
+          ayahRange: block.ayahRange,
+          retention: 0,
+          stageIndex: -1,
+          stageName: "Not started",
+          repTarget: 100,
+          firstLockedAt: null,
+          lastSuccessfulRecallAt: null,
+          nextDueAt: null,
+          lastResult: null,
+          lastAttemptAt: null,
+          weak: false,
+          attempts: []
+        };
+      });
+
+      return {
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+        settings: { ...CONFIG },
+        streak: {
+          current: 0,
+          best: 0,
+          lastCompletedReviewDate: null
+        },
+        sections,
+        ayat,
+        blocks,
+        todayBlocks: ["1-7", "8-13"],
+        unlockedAchievements: []
+      };
+    }
+
+    // STORAGE
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return recalculate(createInitialState());
+        return recalculate(mergeWithInitial(JSON.parse(saved)));
+      } catch (error) {
+        console.warn("Could not load campaign state", error);
+        return recalculate(createInitialState());
+      }
+    }
+
+    function mergeWithInitial(saved) {
+      const initial = createInitialState();
+      return hydrateAyatFromStartedBlocks({
+        ...initial,
+        ...saved,
+        settings: { ...initial.settings, ...(saved.settings || {}) },
+        streak: { ...initial.streak, ...(saved.streak || {}) },
+        sections: { ...initial.sections, ...(saved.sections || {}) },
+        ayat: { ...initial.ayat, ...(saved.ayat || {}) },
+        blocks: { ...initial.blocks, ...(saved.blocks || {}) },
+        todayBlocks: Array.isArray(saved.todayBlocks) ? saved.todayBlocks : initial.todayBlocks,
+        unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : []
+      });
+    }
+
+    function hydrateAyatFromStartedBlocks(nextState) {
+      Object.values(nextState.blocks).forEach(block => {
+        if ((block.stageIndex ?? -1) < 0 || !(block.retention || 0)) return;
+        const ayat = range(block.ayahRange[0], block.ayahRange[1]).map(ayah => nextState.ayat[String(ayah)]).filter(Boolean);
+        if (!ayat.length) return;
+        ayat.forEach(ayah => {
+          if ((ayah.stageIndex ?? -1) >= 0 || (ayah.retention || 0) > 0) return;
+          ayah.retention = block.retention || 0;
+          ayah.stageIndex = block.stageIndex;
+          ayah.stageName = block.stageName || "Not started";
+          ayah.firstLockedAt = block.firstLockedAt;
+          ayah.lastSuccessfulRecallAt = block.lastSuccessfulRecallAt;
+          ayah.nextDueAt = block.nextDueAt;
+          ayah.lastResult = block.lastResult;
+          ayah.lastAttemptAt = block.lastAttemptAt;
+        });
+      });
+      return nextState;
+    }
+
+    function saveState() {
+      state.updatedAt = new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // TIME HELPERS
+    function getDueStatus(item, now = Date.now()) {
+      if (!item.nextDueAt) return item.stageIndex >= 0 ? "future" : "not_started";
+      const due = new Date(item.nextDueAt).getTime();
+      const diff = due - now;
+      if (diff > DAY) return "future";
+      if (diff > 0) return "due_soon";
+      const overdueBy = Math.abs(diff);
+      const stage = RETENTION_STAGES[item.stageIndex] || RETENTION_STAGES[0];
+      const grace = stage.graceMs ?? DAY;
+      if (overdueBy <= Math.min(DAY, grace / 2)) return "due_now";
+      if (overdueBy <= grace) return "overdue";
+      return "decay_risk";
+    }
+
+    function formatDue(item) {
+      if (!item.nextDueAt) return item.stageIndex >= RETENTION_STAGES.length - 1 ? "Complete" : "No review scheduled";
+      const diff = new Date(item.nextDueAt).getTime() - Date.now();
+      const abs = Math.abs(diff);
+      const suffix = diff >= 0 ? "left" : "late";
+      if (abs < 60 * 1000) return diff >= 0 ? "Due now" : "Just overdue";
+      if (abs < 60 * 60 * 1000) return `${Math.round(abs / (60 * 1000))}m ${suffix}`;
+      if (abs < DAY) return `${Math.round(abs / (60 * 60 * 1000))}h ${suffix}`;
+      return `${Math.round(abs / DAY)}d ${suffix}`;
+    }
+
+    function localDay() {
+      return new Date().toLocaleDateString();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    // RETENTION ENGINE
+    function applyDecay() {
+      const allItems = [...Object.values(state.ayat), ...Object.values(state.blocks)];
+      allItems.forEach(item => {
+        if (getDueStatus(item) !== "decay_risk" || item.stageIndex <= 0) return;
+        item.stageIndex -= 1;
+        const stage = RETENTION_STAGES[item.stageIndex];
+        item.stageName = stage.name;
+        item.retention = stage.retention;
+        item.nextDueAt = stage.nextDelayMs ? new Date(Date.now() + stage.nextDelayMs).toISOString() : null;
+        item.decayedAt = new Date().toISOString();
+      });
+    }
+
+    function applyPerfectRecall(item, now = Date.now()) {
+      const nextStageIndex = Math.min((item.stageIndex ?? -1) + 1, RETENTION_STAGES.length - 1);
+      const nextStage = RETENTION_STAGES[nextStageIndex];
+      const lastSuccess = item.lastSuccessfulRecallAt ? new Date(item.lastSuccessfulRecallAt).getTime() : null;
+      const canAdvance = !lastSuccess || now - lastSuccess >= nextStage.minDelayMs;
+
+      item.lastResult = "perfect";
+      item.lastAttemptAt = new Date(now).toISOString();
+      item.weak = false;
+
+      if (canAdvance) {
+        item.stageIndex = nextStageIndex;
+        item.stageName = nextStage.name;
+        item.retention = nextStage.retention;
+        item.lastSuccessfulRecallAt = new Date(now).toISOString();
+        item.firstLockedAt = item.firstLockedAt || new Date(now).toISOString();
+        item.nextDueAt = nextStage.nextDelayMs ? new Date(now + nextStage.nextDelayMs).toISOString() : null;
+        return { advanced: true, item };
+      }
+
+      item.lastPracticeAt = new Date(now).toISOString();
+      return { advanced: false, item };
+    }
+
+    function applyMinorHesitation(item, now = Date.now()) {
+      item.lastResult = "minor";
+      item.lastAttemptAt = new Date(now).toISOString();
+      return { advanced: false, item };
+    }
+
+    function applyNeededCue(item, now = Date.now()) {
+      item.lastResult = "cue";
+      item.lastAttemptAt = new Date(now).toISOString();
+      item.weak = true;
+      return { advanced: false, item };
+    }
+
+    function applyFailedRecall(item, now = Date.now()) {
+      item.lastResult = "failed";
+      item.lastAttemptAt = new Date(now).toISOString();
+      item.weak = true;
+      if ((item.stageIndex ?? -1) > 0) {
+        item.stageIndex -= 1;
+        const stage = RETENTION_STAGES[item.stageIndex];
+        item.stageName = stage.name;
+        item.retention = stage.retention;
+        item.nextDueAt = stage.nextDelayMs ? new Date(now + stage.nextDelayMs).toISOString() : null;
+      }
+      return { advanced: false, item };
+    }
+
+    function recordAttempt(targetType, targetId, result) {
+      const item = targetType === "ayah" ? state.ayat[String(targetId)] : state.blocks[targetId];
+      const previousRetention = item.retention || 0;
+      const priorDueStatus = getDueStatus(item);
+      const previousUnlocked = unlockedSectionIds();
+      let outcome;
+      const now = Date.now();
+
+      if (result === "perfect") outcome = applyPerfectRecall(item, now);
+      if (result === "minor") outcome = applyMinorHesitation(item, now);
+      if (result === "cue") outcome = applyNeededCue(item, now);
+      if (result === "failed") outcome = applyFailedRecall(item, now);
+      if (targetType === "block" && result === "perfect") {
+        item.reps = Math.max(getBlockReps(item), 1);
+        recordImplicitAyahSuccess(item, now);
+      }
+      if (targetType === "ayah" && result === "perfect") {
+        item.reps = Math.max(getAyahReps(item), 1);
+      }
+
+      const attempt = {
+        targetType,
+        targetId: String(targetId),
+        result,
+        attemptedAt: new Date(now).toISOString(),
+        previousRetention,
+        newRetention: item.retention || 0,
+        advanced: outcome.advanced
+      };
+
+      item.attempts = Array.isArray(item.attempts) ? item.attempts : [];
+      item.attempts.push(attempt);
+      if (item.attempts.length > 40) item.attempts = item.attempts.slice(-40);
+
+      if (result === "perfect" && ["due_soon", "due_now", "overdue", "decay_risk"].includes(priorDueStatus)) {
+        updateStreak();
+      }
+
+      recalculate(state);
+      const newlyUnlocked = unlockedSectionIds().filter(id => !previousUnlocked.includes(id));
+      updateAchievements();
+      saveState();
+
+      ui.lastMessage = buildAttemptMessage(outcome, item, newlyUnlocked);
+      render();
+      renderChallengeResult(outcome, item, newlyUnlocked);
+    }
+
+    function buildAttemptMessage(outcome, item, newlyUnlocked) {
+      const stage = item.stageName || "Not started";
+      if (newlyUnlocked.length) {
+        const section = state.sections[String(newlyUnlocked[0])];
+        return `Section unlocked: ${section.name}. Current target is now ${item.retention}% at ${stage}.`;
+      }
+      if (outcome.advanced) return `Advanced to ${stage}. Next review: ${formatDue(item)}.`;
+      return `Recorded. Retention remains ${item.retention || 0}% at ${stage}.`;
+    }
+
+    function recordImplicitAyahSuccess(block, now = Date.now()) {
+      getAyatForBlock(block).forEach(ayah => {
+        const previousRetention = ayah.retention || 0;
+        const outcome = applyPerfectRecall(ayah, now);
+        ayah.reps = Math.max(getAyahReps(ayah), 1);
+        ayah.attempts = Array.isArray(ayah.attempts) ? ayah.attempts : [];
+        ayah.attempts.push({
+          targetType: "ayah",
+          targetId: String(ayah.ayahNumber),
+          source: "block",
+          sourceId: block.id,
+          result: "perfect",
+          attemptedAt: new Date(now).toISOString(),
+          previousRetention,
+          newRetention: ayah.retention || 0,
+          advanced: outcome.advanced
+        });
+        if (ayah.attempts.length > 40) ayah.attempts = ayah.attempts.slice(-40);
+      });
+    }
+
+    function updateStreak() {
+      const today = localDay();
+      const last = state.streak.lastCompletedReviewDate;
+      if (last === today) return;
+      const yesterday = new Date(Date.now() - DAY).toLocaleDateString();
+      state.streak.current = last === yesterday ? state.streak.current + 1 : 1;
+      state.streak.best = Math.max(state.streak.best, state.streak.current);
+      state.streak.lastCompletedReviewDate = today;
+    }
+
+    // UNLOCK ENGINE
+    function calculateSectionRetention(sectionId) {
+      const sectionBlocks = Object.values(state.blocks).filter(item => item.sectionId === sectionId);
+      if (!sectionBlocks.length) return 0;
+      return Math.round(sectionBlocks.reduce((sum, block) => sum + getBlockDisplayRetention(block), 0) / sectionBlocks.length);
+    }
+
+    function updateSectionUnlocks() {
+      const threshold = state.settings.sectionUnlockThreshold;
+      for (let i = 1; i <= 5; i += 1) {
+        const current = state.sections[String(i)];
+        const next = state.sections[String(i + 1)];
+        if (current && next && current.retention >= threshold) next.unlocked = true;
+      }
+    }
+
+    function recalculate(inputState) {
+      state = inputState;
+      applyDecay();
+      SECTIONS.forEach(section => {
+        state.sections[String(section.id)].retention = calculateSectionRetention(section.id);
+      });
+      updateSectionUnlocks();
+      updateAchievements(false);
+      return state;
+    }
+
+    function unlockedSectionIds() {
+      return Object.values(state.sections).filter(section => section.unlocked).map(section => section.id);
+    }
+
+    function getOverallRetention() {
+      return getGlobalRetention();
+    }
+
+    function getSurahAverage() {
+      const ayat = Object.values(state.ayat);
+      if (!ayat.length) return 0;
+      return Math.round(ayat.reduce((sum, item) => sum + (item.retention || 0), 0) / ayat.length);
+    }
+
+    function getSurahFluency() {
+      const blocks = Object.values(state.blocks);
+      if (!blocks.length) return 0;
+      return Math.round(blocks.reduce((sum, block) => sum + (block.retention || 0), 0) / blocks.length);
+    }
+
+    function getWeakestSection() {
+      const sections = Object.values(state.sections);
+      if (!sections.length) return null;
+      return sections.reduce((weakest, section) => (section.retention || 0) < (weakest.retention || 0) ? section : weakest, sections[0]);
+    }
+
+    function getGlobalRetention() {
+      return getSurahAverage();
+    }
+
+    function getRank(retention = getOverallRetention()) {
+      if (retention >= 100) return "Hafiz Mutqin";
+      if (retention >= 90) return "Rasikh";
+      if (retention >= 80) return "Mutqin";
+      if (retention >= 70) return "Thabit";
+      if (retention >= 55) return "Hafiz in Progress";
+      if (retention >= 40) return "Muraji";
+      if (retention >= 25) return "Mutadarris";
+      if (retention >= 15) return "Mubtadi";
+      return "Talib";
+    }
+
+    function updateAchievements(shouldSave = true) {
+      const unlocked = new Set(state.unlockedAchievements || []);
+      const allItems = [...Object.values(state.ayat), ...Object.values(state.blocks)];
+      const hasRetention = value => allItems.some(item => (item.retention || 0) >= value);
+      [
+        ["First Lock", hasRetention(15)],
+        ["Same-Day Hold", hasRetention(25)],
+        ["1-Day Hold", hasRetention(40)],
+        ["3-Day Hold", hasRetention(55)],
+        ["7-Day Hold", hasRetention(70)],
+        ["30-Day Hold", hasRetention(90)],
+        ["Deep Retention", hasRetention(100)],
+        ["First Block Stabilized", Object.values(state.blocks).some(item => getBlockDisplayRetention(item) >= 70)],
+        ["First Section Unlock", Boolean(state.sections["2"]?.unlocked)]
+      ].forEach(([name, achieved]) => {
+        if (achieved) unlocked.add(name);
+      });
+      state.unlockedAchievements = [...unlocked];
+      if (shouldSave) saveState();
+    }
+
+    // RENDERING
+    function render() {
+      const app = document.getElementById("app");
+      if (ui.currentBlockId) {
+        app.innerHTML = renderBlockDetail(ui.currentBlockId);
+      } else {
+        app.innerHTML = `
+          ${renderPhoneHeader()}
+          <main class="screen">
+            ${renderActiveTab()}
+          </main>
+          ${renderTabBar()}
+        `;
+      }
+
+      bindEvents();
+    }
+
+    function renderPhoneHeader() {
+      return `
+        <header class="ios-header">
+          <div class="app-icon">📖</div>
+          <div>
+            <h1 class="app-title">Mutqin</h1>
+            <div class="app-subtitle">متقن</div>
+          </div>
+        </header>
+      `;
+    }
+
+    function renderActiveTab() {
+      if (ui.activeTab === "recall") return renderRecallTab();
+      if (ui.activeTab === "quran") return renderQuranTab();
+      if (ui.activeTab === "progress") return renderProgressTab();
+      if (ui.activeTab === "settings") return renderSettingsTab();
+      return renderTodayTab();
+    }
+
+    function renderTodayTab() {
+      const blocks = getAllOrderedBlocks();
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Memorization <span class="count-pill">${blocks.length}</span></h2>
+        <div class="memory-list">
+          ${SECTIONS.map(section => renderSectionGroup(section)).join("")}
+        </div>
+      `;
+    }
+
+    function renderSectionGroup(section) {
+      const sectionState = state.sections[String(section.id)];
+      const blocks = getAllOrderedBlocks().filter(block => block.sectionId === section.id);
+      return `
+        <section class="today-section">
+          <div class="today-section-head">
+            <strong>Section ${section.id} · ${escapeHtml(section.name)}</strong>
+            <span>${sectionState.retention || 0}% · Ayat ${section.ayahRange[0]}-${section.ayahRange[1]}</span>
+          </div>
+          ${blocks.map(block => renderMemoryCard(block)).join("")}
+        </section>
+      `;
+    }
+
+    function renderMemoryCard(block) {
+      const reps = getBlockReps(block);
+      const target = getBlockRepTarget(block);
+      const percent = Math.min(100, Math.round((reps / target) * 100));
+      const displayRetention = getBlockDisplayRetention(block);
+      const weakest = getWeakestAyah(block);
+      const combinedStatus = getBlockCombinedStatus(block);
+      const stateClass = getBlockColorState(block);
+      return `
+        <button class="memory-card ${stateClass}" data-open-block="${escapeHtml(block.id)}">
+          <span>
+            <span class="memory-title">Al-Hajj - الحج</span>
+            <span class="memory-subtitle">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} · ${displayRetention}% visible · ${escapeHtml(statusLabel(combinedStatus))}</span>
+            <span class="memory-subtitle">Block ${block.retention || 0}% · weakest Ayah ${weakest?.ayahNumber || "-"} ${weakest?.retention || 0}%</span>
+          </span>
+          <span class="memory-reps">${reps}<span>/${target}</span></span>
+          <span class="thin-progress" style="--w:${percent}%"><span></span></span>
+        </button>
+      `;
+    }
+
+    function renderBlockDetail(blockId) {
+      const block = state.blocks[blockId];
+      const reps = getBlockReps(block);
+      const target = getBlockRepTarget(block);
+      const displayRetention = getBlockDisplayRetention(block);
+      const strength = displayRetention ? Math.max(1, Math.min(5, Math.ceil(displayRetention / 20))) : 0;
+      const progress = Math.min(100, Math.round((reps / target) * 100));
+      const stateClass = getBlockColorState(block);
+      return `
+        <header class="detail-header">
+          <button class="back-pill" data-main>‹ Main</button>
+          <div class="detail-title">Verses ${block.ayahRange[0]}-${block.ayahRange[1]} - الحج</div>
+          <button class="trash-pill" data-reset-block="${escapeHtml(block.id)}">⌫</button>
+        </header>
+        ${renderBlockStatusRibbon(block, stateClass)}
+        <main class="rep-panel">
+          <div class="muted-label">Repetitions</div>
+          <div class="rep-number"><strong>${reps}</strong><span>/ ${target} <button class="rep-edit" data-edit-target="${escapeHtml(block.id)}" aria-label="Edit repetition target">✎</button></span></div>
+          <div class="rep-line" style="--w:${progress}%"><span></span></div>
+          <div class="rep-actions">
+            <button class="rep-small minus" data-rep="${escapeHtml(block.id)}" data-delta="-1">-1</button>
+            <button class="rep-small plus" data-rep="${escapeHtml(block.id)}" data-delta="1">+1</button>
+          </div>
+          <div class="muted-label" style="margin-top:32px">Strength</div>
+          <div class="strength-stars">${[1,2,3,4,5].map(i => `<span class="${i <= strength ? "lit" : ""}">☆</span>`).join("")}</div>
+          ${renderBlockMemoryToggle(block, reps)}
+          ${renderReviewCard(block)}
+          ${renderBlockAyahList(block)}
+          <div class="motto">Not speed. Solidity.</div>
+        </main>
+      `;
+    }
+
+    function renderBlockStatusRibbon(block, stateClass = getBlockColorState(block)) {
+      return `
+        <div class="block-status-ribbon ${stateClass}" aria-label="${escapeHtml(blockRibbonLabel(stateClass))}"></div>
+      `;
+    }
+
+    function blockRibbonLabel(stateClass) {
+      return ({
+        "state-new": "Not memorized",
+        "state-stable": "Memorized",
+        "state-soon": "Recall soon",
+        "state-needed": "Recall needed"
+      })[stateClass] || "Status";
+    }
+
+    function renderReviewCard(block) {
+      const isMemorized = (block.stageIndex ?? -1) >= 0;
+      const weakest = getWeakestAyah(block);
+      const displayRetention = getBlockDisplayRetention(block);
+      const ayahAverage = getBlockAyahAverage(block);
+      return `
+        <section class="review-card">
+          <h3>${isMemorized ? "How was the block recall?" : "Block scores"}</h3>
+          ${isMemorized ? `<p class="review-hint">Recite the full block first, then choose one result.</p>` : ""}
+          <div class="review-meta">
+            <div><span>Visible score</span><strong>${displayRetention}%</strong></div>
+            <div><span>Block fluency</span><strong>${block.retention || 0}%</strong></div>
+            <div><span>Ayah average</span><strong>${ayahAverage}%</strong></div>
+            <div><span>Weakest ayah</span><strong>${weakest ? `Ayah ${weakest.ayahNumber} · ${weakest.retention || 0}%` : "None"}</strong></div>
+          </div>
+          ${isMemorized ? `<div class="review-grid">
+            <button class="review-button perfect" data-block-result="${escapeHtml(block.id)}" data-result="perfect">Perfect</button>
+            <button class="review-button minor" data-block-result="${escapeHtml(block.id)}" data-result="minor">Minor</button>
+            <button class="review-button cue" data-block-result="${escapeHtml(block.id)}" data-result="cue">Needed Cue</button>
+            <button class="review-button failed" data-block-result="${escapeHtml(block.id)}" data-result="failed">Failed</button>
+          </div>` : ""}
+        </section>
+      `;
+    }
+
+    function renderBlockMemoryToggle(block, reps) {
+      const isMemorized = (block.stageIndex ?? -1) >= 0;
+      if (isMemorized) {
+        return `<button class="memorized-btn active block-memory-toggle" data-memory-toggle="${escapeHtml(block.id)}">Forget this block</button>`;
+      }
+      return `<button class="memorized-btn block-memory-toggle ${reps > 0 ? "ready" : ""}" data-memory-toggle="${escapeHtml(block.id)}">I know this block</button>`;
+    }
+
+    function renderBlockAyahList(block) {
+      return `
+        <section class="review-card ayah-repair">
+          <h3>Ayat in this block</h3>
+          <div class="ayah-repair-list">
+            ${getAyatForBlock(block).map(ayah => {
+              const reps = getAyahReps(ayah);
+              const isMemorized = (ayah.stageIndex ?? -1) >= 0;
+              return `
+              <div class="ayah-repair-row ${getItemColorState(ayah)}">
+                <span class="ayah-num">${ayah.ayahNumber}</span>
+                <span class="ayah-repair-main">
+                  <strong>Ayah ${ayah.ayahNumber} · ${ayah.retention || 0}% · ${escapeHtml(statusLabel(getDueStatus(ayah)))}</strong>
+                  <span>${escapeHtml(formatDue(ayah))} · Stage: ${escapeHtml(ayah.stageName || "Not started")} · ${escapeHtml(formatReps(reps))}</span>
+                </span>
+                <span class="score-pair">${ayah.retention || 0}%<span>${escapeHtml(formatDue(ayah))}</span></span>
+                <div class="ayah-practice-row">
+                  <button class="ayah-rep-button minus" data-ayah-rep="${ayah.ayahNumber}" data-delta="-1">-1</button>
+                  <span class="ayah-rep-count">${escapeHtml(formatReps(reps))}</span>
+                  <button class="ayah-rep-button plus" data-ayah-rep="${ayah.ayahNumber}" data-delta="1">+1</button>
+                </div>
+                <div class="ayah-card-actions">
+                  <button class="ayah-memory-action ${isMemorized ? "active" : reps > 0 ? "ready" : ""}" data-ayah-memory-toggle="${ayah.ayahNumber}">${isMemorized ? "Forget this ayah" : "I know this ayah"}</button>
+                  ${isMemorized ? `<button class="ayah-recall" data-start="ayah" data-target="${ayah.ayahNumber}">Recall Ayah</button>` : ""}
+                  <button class="ayah-toggle ${isMemorized ? "" : "wide"}" data-ayah-toggle="${ayah.ayahNumber}">Show ayah</button>
+                  <div class="ayah-arabic hidden" data-ayah-text="${ayah.ayahNumber}">${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
+                </div>
+              </div>
+            `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderRecallTab() {
+      const dueStatuses = ["due_now", "overdue", "decay_risk"];
+      const soonStatuses = ["due_soon"];
+      const dueBlockRows = getRecallRows("block", dueStatuses);
+      const dueAyahRows = getRecallRows("ayah", dueStatuses);
+      const soonBlockRows = getRecallRows("block", soonStatuses);
+      const soonAyahRows = getRecallRows("ayah", soonStatuses);
+      const dueCount = dueBlockRows.length + dueAyahRows.length;
+      const soonCount = soonBlockRows.length + soonAyahRows.length;
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Recall <span class="count-pill">${dueCount}</span></h2>
+        ${renderRecallSection("Due Now", `${dueCount} due`, dueBlockRows, dueAyahRows)}
+        ${renderRecallSection("Coming Soon", `${soonCount} soon`, soonBlockRows, soonAyahRows)}
+      `;
+    }
+
+    function renderRecallSection(title, subtitle, blockRows, ayahRows) {
+      return `
+        <section class="recall-section">
+          <div class="recall-heading">${escapeHtml(title)} <span>${escapeHtml(subtitle)}</span></div>
+          <div class="recall-subhead">Blocks</div>
+          ${blockRows.length ? `<div class="recall-stack">${blockRows.map(renderRecallRow).join("")}</div>` : `<div class="recall-empty">No block recall here.</div>`}
+          <div class="recall-subhead">Ayat</div>
+          ${ayahRows.length ? `<div class="recall-stack">${ayahRows.map(renderRecallRow).join("")}</div>` : `<div class="recall-empty">No ayah recall here.</div>`}
+        </section>
+      `;
+    }
+
+    function renderRecallRow(row) {
+      const item = row.item;
+      const targetId = row.type === "ayah" ? item.ayahNumber : item.id;
+      const title = row.type === "ayah" ? `Ayah ${item.ayahNumber}` : `Verses ${item.ayahRange[0]}-${item.ayahRange[1]}`;
+      const score = row.type === "ayah" ? item.retention || 0 : item.retention || 0;
+      const subtitle = row.type === "ayah"
+        ? `Ayah recall · ${escapeHtml(formatDue(item))}`
+        : `Block fluency · ${escapeHtml(formatDue(item))}`;
+      return `
+        <button class="recall-row ${getItemColorState(item)}" data-start="${row.type}" data-target="${escapeHtml(targetId)}">
+          <span class="recall-kind">${row.type === "ayah" ? "A" : "B"}</span>
+          <span class="recall-main">
+            <strong>${escapeHtml(title)} · ${score}% · ${escapeHtml(statusLabel(row.status))}</strong>
+            <span>${subtitle}</span>
+          </span>
+          <span class="score-pair">${score}%<span>${escapeHtml(item.stageName || "Not started")}</span></span>
+        </button>
+      `;
+    }
+
+    function renderQuranTab() {
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Quran</h2>
+        <div class="quran-list">
+          ${SURAH_AYAT.map(item => `<div class="quran-ayah"><span>${item.ayah}</span>${escapeHtml(item.text)}</div>`).join("")}
+        </div>
+      `;
+    }
+
+    function renderProgressTab() {
+      const globalRetention = getGlobalRetention();
+      const surahAverage = getSurahAverage();
+      const surahFluency = getSurahFluency();
+      const weakestSection = getWeakestSection();
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Percentages</h2>
+        <section class="progress-hero">
+          <div class="muted-label">Global retention</div>
+          <div class="progress-big">${globalRetention}<span>% · ${escapeHtml(getRank(globalRetention))}</span></div>
+          <div class="rep-line" style="--w:${globalRetention}%"><span></span></div>
+          <div class="review-meta progress-trackers">
+            <div><span>Surah average</span><strong>${surahAverage}%</strong></div>
+            <div><span>Surah fluency</span><strong>${surahFluency}%</strong></div>
+            <div><span>Weakest section</span><strong>${weakestSection ? `Section ${weakestSection.id} · ${weakestSection.retention || 0}%` : "None"}</strong></div>
+          </div>
+        </section>
+        <div class="decay-grid">
+          ${Object.values(state.sections).map(section => renderDecayCard(section)).join("")}
+        </div>
+      `;
+    }
+
+    function renderDecayCard(section) {
+      const items = Object.values(state.ayat).filter(item => item.sectionId === section.id);
+      const dueCounts = items.reduce((acc, item) => {
+        acc[getDueStatus(item)] = (acc[getDueStatus(item)] || 0) + 1;
+        return acc;
+      }, {});
+      const risk = (dueCounts.decay_risk || 0) + (dueCounts.overdue || 0);
+      const tone = risk ? "status-bad" : (dueCounts.due_soon || dueCounts.due_now) ? "status-warn" : "status-good";
+      const status = risk ? `${risk} at risk` : (dueCounts.due_soon || dueCounts.due_now) ? "review soon" : "stable";
+      return `
+        <div class="decay-card">
+          <strong>Section ${section.id} · ${escapeHtml(section.name)} <span class="${tone}">${section.retention}%</span></strong>
+          <p>${section.unlocked ? "Unlocked" : "Locked"} · ${status} · Ayat ${section.ayahRange[0]}-${section.ayahRange[1]}</p>
+          <div class="rep-line" style="--w:${section.retention}%"><span></span></div>
+        </div>
+      `;
+    }
+
+    function renderSettingsTab() {
+      return `
+        <h2 class="section-label"><span class="green-dot"></span>Settings</h2>
+        <div class="decay-grid">
+          <div class="decay-card"><strong>Progress backup</strong><p>Export or import your local memorization data.</p></div>
+          <button class="memorized-btn ready" data-export>Export Progress</button>
+          <label class="memorized-btn ready" style="display:grid;place-items:center;">Import Progress<input type="file" accept="application/json" data-import class="hidden" /></label>
+          <button class="memorized-btn" data-reset>Reset Campaign</button>
+        </div>
+      `;
+    }
+
+    function renderTabBar() {
+      const tabs = [
+        ["today", "☼", "Today"],
+        ["recall", "R", "Recall"],
+        ["quran", "▯", "Quran"],
+        ["progress", "%", "Progress"],
+        ["settings", "⚙", "Settings"]
+      ];
+      return `
+        <nav class="tabbar">
+          ${tabs.map(([id, icon, label]) => `
+            <button class="tab-button ${ui.activeTab === id ? "active" : ""}" data-tab="${id}">
+              <span class="tab-icon">${icon}</span>
+              <span>${label}</span>
+            </button>
+          `).join("")}
+        </nav>
+      `;
+    }
+
+    function metric(label, value) {
+      return `<div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+    }
+
+    function renderMap() {
+      return `
+        <aside class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Surah Map</h2>
+            <span class="chip">6 zones</span>
+          </div>
+          <div class="panel-body section-list">
+            ${SECTIONS.map(section => renderSectionCard(section)).join("")}
+          </div>
+        </aside>
+      `;
+    }
+
+    function renderMissionStrip() {
+      const mission = buildMissions()[0];
+      const current = state.sections[String(ui.selectedSectionId)];
+      const next = state.sections[String(ui.selectedSectionId + 1)];
+      const remaining = next ? Math.max(0, state.settings.sectionUnlockThreshold - current.retention) : 0;
+      return `
+        <section class="focus-strip">
+          <div class="focus-card">
+            <strong>Next Recall</strong>
+            <span>${escapeHtml(mission.title)} - ${escapeHtml(mission.subtitle)}</span>
+            <div class="action-row">
+              <button class="primary-action" data-start="${mission.type}" data-target="${escapeHtml(mission.id)}">Start</button>
+            </div>
+          </div>
+          <div class="focus-card">
+            <strong>Section Goal</strong>
+            <span>${next ? `${remaining}% retention needed to unlock Section ${next.id} - ${next.name}.` : "All campaign zones are available. Keep preserving retention."}</span>
+          </div>
+          <div class="focus-card">
+            <strong>Backup</strong>
+            <span>Progress is saved in this browser. Export a JSON backup when you finish a session.</span>
+            <div class="toolbar">
+              <button data-export>Export</button>
+              <label class="file-label">Import<input type="file" accept="application/json" data-import /></label>
+              <button data-reset>Reset</button>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSupportPanel() {
+      return `
+        <section class="support-grid">
+          <div class="panel">
+            <div class="panel-header"><h2 class="panel-title">At Risk</h2></div>
+            <div class="panel-body mini-list">${renderAtRisk()}</div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h2 class="panel-title">Achievements</h2></div>
+            <div class="panel-body mini-list">${renderAchievements()}</div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h2 class="panel-title">Method</h2></div>
+            <div class="panel-body mini-list">
+              <div class="mini-item"><strong>Recall first</strong><span>Only Perfect can advance a stage.</span></div>
+              <div class="mini-item"><strong>Real elapsed time</strong><span>Stage timing uses milliseconds since the last successful advancement.</span></div>
+              <div class="mini-item"><strong>Section retention</strong><span>Average of the section's block visible scores.</span></div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderFullSurahReference() {
+      return `
+        <section class="panel surah-reference-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Arabic Surah Text</h2>
+            <span class="chip">Surah Al-Hajj / 78 ayat</span>
+          </div>
+          <div class="panel-body">
+            <div class="surah-list">
+              ${SURAH_AYAT.map(item => `
+                <button class="surah-ayah ${ui.selectedAyah === item.ayah ? "active" : ""}" data-ayah-ref="${item.ayah}">
+                  <span>${item.ayah}</span>${escapeHtml(item.text)}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSectionCard(section) {
+      const saved = state.sections[String(section.id)];
+      const locked = !saved.unlocked;
+      const active = ui.selectedSectionId === section.id;
+      const status = locked ? "Locked" : active ? "Active" : "Unlocked";
+      return `
+        <button class="section-card ${locked ? "locked" : ""} ${active ? "active" : ""} status-${getSectionStatus(section.id)}"
+          data-section="${section.id}" ${locked ? "disabled" : ""}>
+          <div class="section-head">
+            <span class="section-mark" data-label="${escapeHtml(section.motif)}" style="--ring:${saved.retention}%"></span>
+            <span>
+              <span class="section-name">Section ${section.id} - ${escapeHtml(section.name)}</span>
+              <span class="section-meta">Ayat ${section.ayahRange[0]}-${section.ayahRange[1]} / ${saved.retention}% retention</span>
+            </span>
+            <span class="lock-state">${status}</span>
+          </div>
+          <div class="progress-line" style="--w:${saved.retention}%"><span></span></div>
+        </button>
+      `;
+    }
+
+    function getSectionStatus(sectionId) {
+      const items = Object.values(state.ayat).filter(item => item.sectionId === sectionId);
+      const ranked = ["decay_risk", "overdue", "due_now", "due_soon"];
+      return ranked.find(status => items.some(item => getDueStatus(item) === status)) || "future";
+    }
+
+    function renderSectionWorkspace() {
+      const section = state.sections[String(ui.selectedSectionId)];
+      const blocks = Object.values(state.blocks).filter(block => block.sectionId === section.id);
+      const selectedBlock = state.blocks[ui.selectedBlockId] || blocks[0];
+      if (selectedBlock && selectedBlock.id !== ui.selectedBlockId) ui.selectedBlockId = selectedBlock.id;
+      const selectedAyah = state.ayat[String(ui.selectedAyah)] || state.ayat[String(selectedBlock.ayahRange[0])];
+      return `
+        <section class="panel">
+          <div class="section-hero">
+            <div>
+              <div class="eyebrow">Selected Section</div>
+              <h2>Section ${section.id} - ${escapeHtml(section.name)}</h2>
+              <div class="hero-details">
+                <span class="chip gold">Ayat ${section.ayahRange[0]}-${section.ayahRange[1]}</span>
+                <span class="chip">${section.retention}% section retention</span>
+                <span class="chip">${section.unlocked ? "Unlocked" : "Locked"}</span>
+                <span class="chip">Next unlock at ${state.settings.sectionUnlockThreshold}%</span>
+              </div>
+            </div>
+            <div class="big-ring" style="--ring:${section.retention}%"><div>${section.retention}%</div></div>
+          </div>
+          <div class="work-grid">
+            <div class="stack">
+              <div class="panel-header"><h3 class="panel-title">Blocks</h3></div>
+              ${blocks.map(block => renderBlockButton(block)).join("")}
+            </div>
+            <div>
+              <div class="panel-header"><h3 class="panel-title">Ayah Nodes</h3><span class="chip">Block ${escapeHtml(selectedBlock.id)}</span></div>
+              <div class="panel-body">
+                <div class="node-grid">
+                  ${range(selectedBlock.ayahRange[0], selectedBlock.ayahRange[1]).map(ayah => renderAyahNode(ayah)).join("")}
+                </div>
+                ${renderSelectedAyah(selectedAyah)}
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderBlockButton(block) {
+      const active = ui.selectedBlockId === block.id;
+      return `
+        <button class="block-button ${active ? "active" : ""} status-${getDueStatus(block)}" data-block="${escapeHtml(block.id)}">
+          <div class="block-top">
+            <span>
+              <span class="block-title">Block ${escapeHtml(block.id)}</span>
+              <span class="block-subtitle">Ayat ${block.ayahRange[0]}-${block.ayahRange[1]} / ${block.stageName}</span>
+            </span>
+            <span class="compact-ring" data-label="${block.retention}%" style="--ring:${block.retention}%"></span>
+          </div>
+          <div class="due-text">Next review: ${escapeHtml(formatDue(block))}</div>
+          <div class="action-row">
+            <span class="chip">Flow recall</span>
+            <span class="chip">${escapeHtml(statusLabel(getDueStatus(block)))}</span>
+          </div>
+        </button>
+      `;
+    }
+
+    function renderAyahNode(ayahNumber) {
+      const ayah = state.ayat[String(ayahNumber)];
+      const active = ui.selectedAyah === ayahNumber;
+      const status = getDueStatus(ayah);
+      return `
+        <button class="ayah-node ${active ? "active" : ""} status-${status}" data-ayah="${ayahNumber}">
+          <span class="node-ring" data-label="${ayahNumber}" style="--ring:${ayah.retention}%"></span>
+          <strong>${ayah.retention}%</strong>
+          <span class="node-state">${escapeHtml(statusLabel(status))}</span>
+        </button>
+      `;
+    }
+
+    function renderSelectedAyah(ayah) {
+      const status = getDueStatus(ayah);
+      return `
+        <div class="detail-panel">
+          <h3>Ayah ${ayah.ayahNumber}</h3>
+          <div class="detail-grid">
+            ${detailCell("Current Retention", `${ayah.retention || 0}%`)}
+            ${detailCell("Stage", ayah.stageName || "Not started")}
+            ${detailCell("Last Recall", ayah.lastResult || "None")}
+            ${detailCell("Next Review", formatDue(ayah))}
+            ${detailCell("Decay Risk", statusLabel(status))}
+            ${detailCell("First-word Cue", AYAH_FIRST_WORDS[ayah.ayahNumber] || "Unavailable")}
+          </div>
+          <div class="reference-text selected-arabic"><span>Ayah ${ayah.ayahNumber}</span>${escapeHtml(AYAH_TEXT[ayah.ayahNumber] || "")}</div>
+          <div class="action-row">
+            <button class="primary-action" data-start="ayah" data-target="${ayah.ayahNumber}">Start Ayah Recall</button>
+            <button class="secondary-action" data-start="block" data-target="${escapeHtml(ayah.blockId)}">Start Block Recall</button>
+          </div>
+          <div id="notice" class="notice ${ui.lastMessage ? "active" : ""}">${escapeHtml(ui.lastMessage)}</div>
+        </div>
+      `;
+    }
+
+    function detailCell(label, value) {
+      return `<div class="detail-cell"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+    }
+
+    function renderRightPanel() {
+      return `
+        <aside class="right-stack">
+          <section class="panel">
+            <div class="panel-header"><h2 class="panel-title">Today's Missions</h2></div>
+            <div class="panel-body mission-list">${renderMissions()}</div>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><h2 class="panel-title">At Risk</h2></div>
+            <div class="panel-body mini-list">${renderAtRisk()}</div>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><h2 class="panel-title">Next Milestone</h2></div>
+            <div class="panel-body mini-list">${renderMilestone()}</div>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><h2 class="panel-title">Achievements</h2></div>
+            <div class="panel-body mini-list">${renderAchievements()}</div>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><h2 class="panel-title">Backup</h2></div>
+            <div class="panel-body toolbar">
+              <button data-export>Export</button>
+              <label class="file-label">Import<input type="file" accept="application/json" data-import /></label>
+              <button data-reset>Reset</button>
+            </div>
+          </section>
+        </aside>
+      `;
+    }
+
+    function renderMissions() {
+      const missions = buildMissions();
+      return missions.map(mission => `
+        <button class="mission-button" data-start="${mission.type}" data-target="${escapeHtml(mission.id)}">
+          <strong>${escapeHtml(mission.title)}</strong>
+          <span>${escapeHtml(mission.subtitle)}</span>
+        </button>
+      `).join("");
+    }
+
+    function buildMissions() {
+      const ayahMissions = Object.values(state.ayat)
+        .filter(item => state.sections[String(item.sectionId)].unlocked)
+        .map(item => ({ item, status: getDueStatus(item), weight: statusWeight(getDueStatus(item)) }))
+        .filter(row => row.weight > 0)
+        .sort((a, b) => b.weight - a.weight || a.item.ayahNumber - b.item.ayahNumber)
+        .slice(0, 3)
+        .map(row => ({
+          type: "ayah",
+          id: row.item.ayahNumber,
+          title: `Review Ayah ${row.item.ayahNumber}`,
+          subtitle: `${statusLabel(row.status)} / ${row.item.retention}% / ${formatDue(row.item)}`
+        }));
+
+      if (ayahMissions.length) return ayahMissions;
+
+      const blockDue = Object.values(state.blocks)
+        .filter(item => state.sections[String(item.sectionId)].unlocked)
+        .map(item => ({ item, status: getDueStatus(item), weight: statusWeight(getDueStatus(item)) }))
+        .filter(row => row.weight > 0)
+        .sort((a, b) => b.weight - a.weight)
+        .slice(0, 2)
+        .map(row => ({
+          type: "block",
+          id: row.item.id,
+          title: `Recite Block ${row.item.id}`,
+          subtitle: `${statusLabel(row.status)} / ${row.item.retention}% / ${formatDue(row.item)}`
+        }));
+
+      if (blockDue.length) return blockDue;
+
+      const next = Object.values(state.ayat)
+        .filter(item => state.sections[String(item.sectionId)].unlocked && item.stageIndex < 0)
+        .sort((a, b) => a.ayahNumber - b.ayahNumber)[0];
+
+      return next ? [{
+        type: "ayah",
+        id: next.ayahNumber,
+        title: `Begin Ayah ${next.ayahNumber}`,
+        subtitle: "First clean recall starts the ladder"
+      }] : [{
+        type: "block",
+        id: "1-7",
+        title: "Preserve current campaign",
+        subtitle: "No urgent reviews"
+      }];
+    }
+
+    function renderAtRisk() {
+      const items = Object.values(state.ayat)
+        .filter(item => ["overdue", "decay_risk"].includes(getDueStatus(item)))
+        .sort((a, b) => a.ayahNumber - b.ayahNumber)
+        .slice(0, 4);
+      if (!items.length) return `<div class="mini-item"><strong>No active risk</strong><span>Due reviews will appear here.</span></div>`;
+      return items.map(item => `<div class="mini-item"><strong>Ayah ${item.ayahNumber}</strong><span>${statusLabel(getDueStatus(item))} / ${formatDue(item)}</span></div>`).join("");
+    }
+
+    function renderMilestone() {
+      const current = state.sections[String(ui.selectedSectionId)];
+      const next = state.sections[String(ui.selectedSectionId + 1)];
+      if (!next) return `<div class="mini-item"><strong>Final zone</strong><span>Preserve retention over time.</span></div>`;
+      const remaining = Math.max(0, state.settings.sectionUnlockThreshold - current.retention);
+      return `<div class="mini-item"><strong>Unlock Section ${next.id} - ${escapeHtml(next.name)}</strong><span>${remaining}% retention needed in Section ${current.id}.</span></div>`;
+    }
+
+    function renderAchievements() {
+      const names = ["First Lock", "Same-Day Hold", "1-Day Hold", "3-Day Hold", "7-Day Hold", "30-Day Hold", "Deep Retention", "First Block Stabilized", "First Section Unlock"];
+      return names.map(name => {
+        const unlocked = state.unlockedAchievements.includes(name);
+        return `<div class="mini-item"><strong>${unlocked ? "Unlocked" : "Locked"} / ${escapeHtml(name)}</strong><span>${unlocked ? "Retention milestone reached" : "Awaiting recall proof"}</span></div>`;
+      }).join("");
+    }
+
+    function statusWeight(status) {
+      return { decay_risk: 5, overdue: 4, due_now: 3, due_soon: 2 }[status] || 0;
+    }
+
+    function statusLabel(status) {
+      return ({
+        not_started: "Not started",
+        future: "Stable",
+        due_soon: "Due soon",
+        due_now: "Due now",
+        overdue: "Overdue",
+        decay_risk: "Decay risk"
+      })[status] || status;
+    }
+
+    function range(start, end) {
+      return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+    }
+
+    function formatReps(reps) {
+      return `${reps} ${reps === 1 ? "rep" : "reps"}`;
+    }
+
+    function getBlockReps(block) {
+      return Math.max(0, Math.min(999, Number(block.reps || 0)));
+    }
+
+    function getAyahReps(ayah) {
+      return Math.max(0, Math.min(999, Number(ayah.reps || 0)));
+    }
+
+    function getBlockRepTarget(block) {
+      const target = Number(block.repTarget || 100);
+      if (!Number.isFinite(target)) return 100;
+      return Math.max(1, Math.min(999, Math.round(target)));
+    }
+
+    function getAllOrderedBlocks() {
+      return BLOCKS.map(block => state.blocks[block.id]).filter(Boolean);
+    }
+
+    function getAyatForBlock(block) {
+      return range(block.ayahRange[0], block.ayahRange[1]).map(ayah => state.ayat[String(ayah)]).filter(Boolean);
+    }
+
+    function getWeakestAyah(block) {
+      const ayat = getAyatForBlock(block);
+      if (!ayat.length) return null;
+      return ayat.reduce((weakest, ayah) => (ayah.retention || 0) < (weakest.retention || 0) ? ayah : weakest, ayat[0]);
+    }
+
+    function getBlockAyahAverage(block) {
+      const ayat = getAyatForBlock(block);
+      if (!ayat.length) return 0;
+      return Math.round(ayat.reduce((sum, ayah) => sum + (ayah.retention || 0), 0) / ayat.length);
+    }
+
+    function getBlockDisplayRetention(block) {
+      const weakest = getWeakestAyah(block);
+      if (!weakest) return block.retention || 0;
+      return Math.min(block.retention || 0, weakest.retention || 0);
+    }
+
+    function getWorstRecallStatus(items) {
+      return items
+        .map(item => getDueStatus(item))
+        .sort((a, b) => statusWeight(b) - statusWeight(a))[0] || "not_started";
+    }
+
+    function getBlockCombinedStatus(block) {
+      return getWorstRecallStatus([block, ...getAyatForBlock(block)]);
+    }
+
+    function getItemColorState(item) {
+      const status = getDueStatus(item);
+      if ((item.stageIndex ?? -1) < 0 || !(item.retention || 0)) return "state-new";
+      if (status === "due_soon") return "state-soon";
+      if (["due_now", "overdue", "decay_risk"].includes(status)) return "state-needed";
+      return "state-stable";
+    }
+
+    function getBlockColorState(block) {
+      const status = getBlockCombinedStatus(block);
+      if (!getBlockDisplayRetention(block)) return "state-new";
+      if (status === "due_soon") return "state-soon";
+      if (["due_now", "overdue", "decay_risk"].includes(status)) return "state-needed";
+      return "state-stable";
+    }
+
+    function getRecallRows(type, statuses) {
+      const items = type === "ayah" ? Object.values(state.ayat) : getAllOrderedBlocks();
+      return items
+        .filter(item => state.sections[String(item.sectionId)]?.unlocked)
+        .map(item => ({ type, item, status: getDueStatus(item), weight: statusWeight(getDueStatus(item)) }))
+        .filter(row => statuses.includes(row.status))
+        .sort((a, b) => b.weight - a.weight || compareRecallOrder(a, b));
+    }
+
+    function compareRecallOrder(a, b) {
+      if (a.type === "ayah") return a.item.ayahNumber - b.item.ayahNumber;
+      return BLOCKS.findIndex(block => block.id === a.item.id) - BLOCKS.findIndex(block => block.id === b.item.id);
+    }
+
+    function changeBlockReps(blockId, delta) {
+      const block = state.blocks[blockId];
+      block.reps = Math.max(0, Math.min(999, getBlockReps(block) + Number(delta)));
+      block.lastAttemptAt = new Date().toISOString();
+      saveState();
+      render();
+    }
+
+    function changeAyahReps(ayahNumber, delta) {
+      const ayah = state.ayat[String(ayahNumber)];
+      ayah.reps = Math.max(0, Math.min(999, getAyahReps(ayah) + Number(delta)));
+      ayah.lastAttemptAt = new Date().toISOString();
+      saveState();
+      render();
+    }
+
+    function editBlockRepTarget(blockId) {
+      const block = state.blocks[blockId];
+      const current = getBlockRepTarget(block);
+      const input = prompt("Set repetition target", String(current));
+      if (input === null) return;
+      const next = Number(input);
+      if (!Number.isFinite(next) || next <= 0) {
+        alert("Please enter a number between 1 and 999.");
+        return;
+      }
+      block.repTarget = Math.max(1, Math.min(999, Math.round(next)));
+      saveState();
+      render();
+    }
+
+    function markBlockMemorized(blockId) {
+      recordBlockRecall(blockId, "perfect");
+    }
+
+    function markAyahMemorized(ayahNumber) {
+      recordAttempt("ayah", ayahNumber, "perfect");
+    }
+
+    function recordBlockRecall(blockId, result) {
+      const block = state.blocks[blockId];
+      const now = Date.now();
+      const previousUnlocked = unlockedSectionIds();
+      const previousRetention = block.retention || 0;
+      const priorDueStatus = getDueStatus(block);
+      let outcome;
+      if (result === "perfect") outcome = applyPerfectRecall(block, now);
+      if (result === "minor") outcome = applyMinorHesitation(block, now);
+      if (result === "cue") outcome = applyNeededCue(block, now);
+      if (result === "failed") outcome = applyFailedRecall(block, now);
+      if (result === "perfect") {
+        block.reps = Math.max(getBlockReps(block), 1);
+        recordImplicitAyahSuccess(block, now);
+      }
+      block.attempts = Array.isArray(block.attempts) ? block.attempts : [];
+      block.attempts.push({
+        targetType: "block",
+        targetId: blockId,
+        result,
+        attemptedAt: new Date(now).toISOString(),
+        previousRetention,
+        newRetention: block.retention || 0,
+        advanced: outcome.advanced
+      });
+      if (result === "perfect" && ["due_soon", "due_now", "overdue", "decay_risk"].includes(priorDueStatus)) {
+        updateStreak();
+      }
+      recalculate(state);
+      updateAchievements();
+      saveState();
+      const newlyUnlocked = unlockedSectionIds().filter(id => !previousUnlocked.includes(id));
+      ui.lastMessage = buildAttemptMessage(outcome, block, newlyUnlocked);
+      render();
+    }
+
+    function resetBlock(blockId) {
+      if (!confirm("Reset this block's repetitions and block retention?")) return;
+      clearBlockMemory(blockId, true);
+    }
+
+    function unmemorizeBlock(blockId) {
+      clearBlockMemory(blockId, false);
+    }
+
+    function toggleBlockMemorized(blockId) {
+      const block = state.blocks[blockId];
+      if ((block.stageIndex ?? -1) >= 0) {
+        unmemorizeBlock(blockId);
+        return;
+      }
+      markBlockMemorized(blockId);
+    }
+
+    function unmemorizeAyah(ayahNumber) {
+      clearAyahMemory(ayahNumber, false);
+    }
+
+    function toggleAyahMemorized(ayahNumber) {
+      const ayah = state.ayat[String(ayahNumber)];
+      if ((ayah.stageIndex ?? -1) >= 0) {
+        unmemorizeAyah(ayahNumber);
+        return;
+      }
+      markAyahMemorized(ayahNumber);
+    }
+
+    function clearBlockMemory(blockId, includeReps) {
+      const block = state.blocks[blockId];
+      if (includeReps) block.reps = 0;
+      block.retention = 0;
+      block.stageIndex = -1;
+      block.stageName = "Not started";
+      block.firstLockedAt = null;
+      block.lastSuccessfulRecallAt = null;
+      block.nextDueAt = null;
+      block.lastResult = null;
+      block.lastAttemptAt = null;
+      block.weak = false;
+      block.attempts = [];
+      recalculate(state);
+      saveState();
+      render();
+    }
+
+    function clearAyahMemory(ayahNumber, includeReps) {
+      const ayah = state.ayat[String(ayahNumber)];
+      if (includeReps) ayah.reps = 0;
+      ayah.retention = 0;
+      ayah.stageIndex = -1;
+      ayah.stageName = "Not started";
+      ayah.firstLockedAt = null;
+      ayah.lastSuccessfulRecallAt = null;
+      ayah.nextDueAt = null;
+      ayah.lastResult = null;
+      ayah.lastAttemptAt = null;
+      ayah.weak = false;
+      ayah.attempts = [];
+      recalculate(state);
+      saveState();
+      render();
+    }
+
+    function toggleAyahText(button) {
+      const row = button.closest(".ayah-repair-row");
+      const text = row?.querySelector(`[data-ayah-text="${button.dataset.ayahToggle}"]`);
+      if (!text) return;
+      const willShow = text.classList.contains("hidden");
+      text.classList.toggle("hidden", !willShow);
+      button.classList.toggle("open", willShow);
+      button.textContent = willShow ? "Hide ayah" : "Show ayah";
+    }
+
+    // EVENT HANDLERS
+    function bindEvents() {
+      document.querySelectorAll("[data-tab]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.activeTab = button.dataset.tab;
+          ui.currentBlockId = null;
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-open-block]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.currentBlockId = button.dataset.openBlock;
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-main]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.currentBlockId = null;
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-rep]").forEach(button => {
+        button.addEventListener("click", () => changeBlockReps(button.dataset.rep, button.dataset.delta));
+      });
+
+      document.querySelectorAll("[data-ayah-rep]").forEach(button => {
+        button.addEventListener("click", () => changeAyahReps(button.dataset.ayahRep, button.dataset.delta));
+      });
+
+      document.querySelectorAll("[data-edit-target]").forEach(button => {
+        button.addEventListener("click", () => editBlockRepTarget(button.dataset.editTarget));
+      });
+
+      document.querySelectorAll("[data-memory-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleBlockMemorized(button.dataset.memoryToggle));
+      });
+
+      document.querySelectorAll("[data-ayah-memory-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleAyahMemorized(button.dataset.ayahMemoryToggle));
+      });
+
+      document.querySelectorAll("[data-ayah-toggle]").forEach(button => {
+        button.addEventListener("click", () => toggleAyahText(button));
+      });
+
+      document.querySelectorAll("[data-block-result]").forEach(button => {
+        button.addEventListener("click", () => recordBlockRecall(button.dataset.blockResult, button.dataset.result));
+      });
+
+      document.querySelectorAll("[data-reset-block]").forEach(button => {
+        button.addEventListener("click", () => resetBlock(button.dataset.resetBlock));
+      });
+
+      document.querySelectorAll("[data-section]").forEach(button => {
+        button.addEventListener("click", () => {
+          const sectionId = Number(button.dataset.section);
+          const section = state.sections[String(sectionId)];
+          if (!section.unlocked) return;
+          ui.selectedSectionId = sectionId;
+          const firstBlock = Object.values(state.blocks).find(block => block.sectionId === sectionId);
+          ui.selectedBlockId = firstBlock.id;
+          ui.selectedAyah = firstBlock.ayahRange[0];
+          ui.lastMessage = "";
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-block]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.selectedBlockId = button.dataset.block;
+          const block = state.blocks[ui.selectedBlockId];
+          ui.selectedAyah = block.ayahRange[0];
+          ui.lastMessage = "";
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-ayah]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.selectedAyah = Number(button.dataset.ayah);
+          ui.lastMessage = "";
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-ayah-ref]").forEach(button => {
+        button.addEventListener("click", () => {
+          const ayahNumber = Number(button.dataset.ayahRef);
+          const ayah = state.ayat[String(ayahNumber)];
+          const section = state.sections[String(ayah.sectionId)];
+          if (!section.unlocked) return;
+          ui.selectedSectionId = ayah.sectionId;
+          ui.selectedBlockId = ayah.blockId;
+          ui.selectedAyah = ayahNumber;
+          ui.lastMessage = "";
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-start]").forEach(button => {
+        button.addEventListener("click", () => openChallenge(button.dataset.start, button.dataset.target));
+      });
+
+      document.querySelectorAll("[data-export]").forEach(button => button.addEventListener("click", exportProgress));
+      document.querySelectorAll("[data-import]").forEach(input => input.addEventListener("change", importProgress));
+      document.querySelectorAll("[data-reset]").forEach(button => button.addEventListener("click", resetCampaign));
+    }
+
+    function openChallenge(type, targetId) {
+      ui.challengeTarget = { type, targetId };
+      ui.challengeCue = "number";
+      renderChallenge();
+    }
+
+    function closeChallenge() {
+      ui.challengeTarget = null;
+      const modal = document.getElementById("challengeModal");
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function renderChallenge() {
+      const modal = document.getElementById("challengeModal");
+      const target = ui.challengeTarget;
+      if (!target) return closeChallenge();
+      const item = target.type === "ayah" ? state.ayat[String(target.targetId)] : state.blocks[target.targetId];
+      const title = target.type === "ayah" ? `Ayah ${item.ayahNumber}` : `Block ${item.id}`;
+      const nextStage = RETENTION_STAGES[Math.min((item.stageIndex ?? -1) + 1, RETENTION_STAGES.length - 1)];
+      const cue = renderCue(target.type, item);
+
+      modal.innerHTML = `
+        <div class="challenge" role="dialog" aria-modal="true">
+          <div class="challenge-header">
+            <div>
+              <div class="eyebrow">Recall Challenge</div>
+              <h2>${escapeHtml(title)}</h2>
+            </div>
+            <button class="close-btn" data-close aria-label="Close">×</button>
+          </div>
+          <div class="challenge-body">
+            <div class="detail-grid">
+              ${detailCell("Current Stage", item.stageName || "Not started")}
+              ${detailCell("Current Retention", `${item.retention || 0}%`)}
+              ${detailCell("Next Milestone", nextStage ? `${nextStage.name} / ${nextStage.retention}%` : "Complete")}
+              ${detailCell("Timing", timingMessage(item, nextStage))}
+            </div>
+            <div class="action-row">
+              <button class="secondary-action" data-cue="number">Ayah number only</button>
+              <button class="secondary-action" data-cue="first">First-word cue</button>
+            </div>
+            ${cue}
+            <div class="result-grid">
+              <button class="result-action perfect" data-result="perfect">Perfect</button>
+              <button class="result-action minor" data-result="minor">Minor Hesitation</button>
+              <button class="result-action cue" data-result="cue">Needed Cue</button>
+              <button class="result-action failed" data-result="failed">Failed</button>
+            </div>
+            <div id="challengeResult" class="notice"></div>
+          </div>
+        </div>
+      `;
+
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      modal.querySelector("[data-close]").addEventListener("click", closeChallenge);
+      modal.querySelectorAll("[data-cue]").forEach(button => {
+        button.addEventListener("click", () => {
+          ui.challengeCue = button.dataset.cue;
+          renderChallenge();
+        });
+      });
+      modal.querySelectorAll("[data-result]").forEach(button => {
+        button.addEventListener("click", () => recordAttempt(target.type, target.targetId, button.dataset.result));
+      });
+    }
+
+    function renderCue(type, item) {
+      if (type === "block") {
+        if (ui.challengeCue === "first") {
+          const words = range(item.ayahRange[0], item.ayahRange[1]).map(ayah => `${ayah}: ${AYAH_FIRST_WORDS[ayah] || "-"}`).join(" / ");
+          return `<div class="cue-box"><div><div class="cue-label">First words</div><div class="cue-main cue-arabic">${escapeHtml(words)}</div></div></div>`;
+        }
+        return `<div class="cue-box"><div><div class="cue-label">Blank flow recall</div><div class="cue-main">Ayat ${item.ayahRange[0]}-${item.ayahRange[1]}</div></div></div>`;
+      }
+
+      if (ui.challengeCue === "first") {
+        return `<div class="cue-box"><div><div class="cue-label">First-word cue</div><div class="cue-main cue-arabic">${escapeHtml(AYAH_FIRST_WORDS[item.ayahNumber] || "Unavailable")}</div></div></div>`;
+      }
+      return `<div class="cue-box"><div><div class="cue-label">Ayah number only</div><div class="cue-main">Ayah ${item.ayahNumber}</div></div></div>`;
+    }
+
+    function timingMessage(item, nextStage) {
+      if (!nextStage) return "Complete";
+      if (!item.lastSuccessfulRecallAt) return "Eligible now";
+      const elapsed = Date.now() - new Date(item.lastSuccessfulRecallAt).getTime();
+      const remaining = nextStage.minDelayMs - elapsed;
+      if (remaining <= 0) return "Eligible now";
+      if (remaining < 60 * 60 * 1000) return `${Math.ceil(remaining / (60 * 1000))}m until advancement`;
+      if (remaining < DAY) return `${Math.ceil(remaining / (60 * 60 * 1000))}h until advancement`;
+      return `${Math.ceil(remaining / DAY)}d until advancement`;
+    }
+
+    function renderChallengeResult(outcome, item, newlyUnlocked) {
+      const target = ui.challengeTarget;
+      renderChallenge();
+      const box = document.getElementById("challengeResult");
+      if (!box) return;
+      const unlockText = newlyUnlocked.length ? ` Section ${newlyUnlocked[0]} unlocked.` : "";
+      box.innerHTML = `
+        <div>${escapeHtml(outcome.advanced ? "Advanced" : "Recorded")}: ${item.retention || 0}% / ${escapeHtml(item.stageName || "Not started")}. Next review: ${escapeHtml(formatDue(item))}.${escapeHtml(unlockText)}</div>
+        ${renderReferenceText(target.type, item)}
+      `;
+      box.classList.add("active");
+    }
+
+    function renderReferenceText(type, item) {
+      if (type === "ayah") {
+        return `<div class="reference-text"><span>Ayah ${item.ayahNumber}</span>${escapeHtml(AYAH_TEXT[item.ayahNumber] || "")}</div>`;
+      }
+      return `<div class="reference-text">${range(item.ayahRange[0], item.ayahRange[1]).map(ayah => `<p><span>${ayah}</span>${escapeHtml(AYAH_TEXT[ayah] || "")}</p>`).join("")}</div>`;
+    }
+
+    // EXPORT IMPORT
+    function exportProgress() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "surah-al-hajj-progress.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importProgress(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (!confirm("Replace current campaign progress with this backup?")) return;
+          state = recalculate(mergeWithInitial(parsed));
+          saveState();
+          ui.activeTab = "today";
+          ui.currentBlockId = null;
+          ui.selectedSectionId = 1;
+          ui.selectedBlockId = "1-7";
+          ui.selectedAyah = 1;
+          ui.lastMessage = "Progress imported.";
+          render();
+        } catch (error) {
+          alert("Could not import this JSON file.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    function resetCampaign() {
+      if (!confirm("Reset all Surah Al-Hajj campaign progress on this browser?")) return;
+      state = createInitialState();
+      saveState();
+      ui = {
+        activeTab: "today",
+        currentBlockId: null,
+        selectedSectionId: 1,
+        selectedBlockId: "1-7",
+        selectedAyah: 1,
+        challengeTarget: null,
+        challengeCue: "number",
+        lastMessage: "Campaign reset."
+      };
+      closeChallenge();
+      render();
+    }
+
+    // INIT
+    state = loadState();
+    render();
+  </script>
+</body>
+</html>

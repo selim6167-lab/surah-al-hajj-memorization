@@ -17,3 +17,9 @@ http://localhost:8765/
 ```
 
 Progress is stored locally in the browser.
+
+## iPhone app
+
+The `ios/` folder contains a native iOS wrapper that loads the same HTML app inside a `WKWebView`.
+
+Open `ios/Mutqin.xcodeproj` in Xcode and follow `ios/README.md` to install it on your personal iPhone with a free Apple ID.
